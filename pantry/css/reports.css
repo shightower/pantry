@@ -1,0 +1,29 @@
+.reportSummaryTable {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2em;
+	background: url('../images/table_bg.png');
+	background-size: auto;
+}
+
+.reportSummaryTable td {
+	border: 1px solid black;
+	width: 50%;
+	font-size: 1.5em;
+}
+
+.tableOfGraphs {
+	width: 90%;
+	height: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.tableOfGraphs tr {
+	height: 50%;
+}
+
+.tableOfGraphs td {
+	width: 50%;
+}
