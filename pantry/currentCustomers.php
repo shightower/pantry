@@ -88,7 +88,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                 </tr>
                 <tr>
                     <td align="right">Phone:</td>
-                    <td align="left"><input id="phoneNumber" /></td>
+                    <td align="left"><input id="phone" /></td>
                 </tr>
                 <tr>
                     <td align="right">Street:</td>
@@ -162,10 +162,10 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                 </tr>
                 <tr>
                     <td align="right"># of Adults:</td>
-                    <td align="left"><div id="numOfAdults"></div></td>
+                    <td align="left"><div id="numAdults"></div></td>
                 </tr>
                 <td align="right"># of Kids:</td>
-                <td align="left"><div id="numOfKids"></div></td>
+                <td align="left"><div id="numKids"></div></td>
                 </tr>
                 <tr>
                     <td align="right">Ethnicity:</td>

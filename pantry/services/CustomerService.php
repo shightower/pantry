@@ -25,33 +25,32 @@ class CustomerService {
     }
 
     private function setValuesAndSave($customer) {
-        $fNameValid = $_POST['firstName'];
-        $lNameValid = $_POST['lastName'];
-        $streetValid = $_POST['street'];
-        $cityValid = $_POST['city'];
-        $stateValid = $_POST['state'];
-        $zipValid = $_POST['zip'];
-        $numKidsValid = $_POST['numOfKids'];
-        $numAdultsValid = $_POST['numOfAdults'];
-        $phonenumberValid = $_POST['phoneNumber'];
-        $ethnicityValid = $_POST['ethnicity'];
-        $attendeeValid = $_POST['attendee'];
-        $serviceValid = $_POST['service'];
+        $firstName = $_POST['firstName'];
+        $lastName = $_POST['lastName'];
+        $street = $_POST['street'];
+        $city = $_POST['city'];
+        $state = $_POST['state'];
+        $zip = $_POST['zip'];
+        $numKids = $_POST['numOfKids'];
+        $numAdults = $_POST['numOfAdults'];
+        $phone = $_POST['phoneNumber'];
+        $ethnicity = $_POST['ethnicity'];
+        $isAttendee = $_POST['attendee'];
+        $service = $_POST['service'];
 
-        $customer->first_name = $fNameValid;
-        $customer->last_name = $lNameValid;
-        $customer->street = $streetValid;
-        $customer->city = $cityValid;
-        $customer->state = $stateValid;
-        $customer->zip = $zipValid;
-        $customer->num_adults = $numAdultsValid;
-        $customer->num_kids = $numKidsValid;
-//        $customer->phone = $phonenumberValid;
-        $customer->ethnicity = $ethnicityValid;
-        $customer->service = $serviceValid;
-        $customer->is_attendee = $attendeeValid;
+        $customer->firstName = $firstName;
+        $customer->lastName = $lastName;
+        $customer->street = $street;
+        $customer->city = $city;
+        $customer->state = $state;
+        $customer->zip = $zip;
+        $customer->numAdults = $numAdults;
+        $customer->numKids = $numKids;
+        $customer->phone = $phone;
+        $customer->ethnicity = $ethnicity;
+        $customer->service = $service;
+        $customer->isAttendee = $isAttendee;
 
         $customer->save();
-        $test = '';
     }
 }

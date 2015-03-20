@@ -2,18 +2,11 @@
 include_once 'common/showErrors.php';
 
 require_once 'services/CustomerService.php';
-//include 'CustomerService.php';
-//include $_SERVER['DOCUMENT_ROOT'] . '/cupboard/libs/Respect/Validator.php';
-//
-//function __autoload($classname) {
-//    require $_SERVER['DOCUMENT_ROOT'] . '/cupboard/libs/' . $classname . '.php';
-//}
 
-    if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
-        $cs = new CustomerService();
-        $cs->addCustomer();
-        phpinfo();
-    }
+if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
+    $cs = new CustomerService();
+    $cs->addCustomer();
+}
 ?>
 <html>
 <head>
@@ -102,7 +95,7 @@ require_once 'services/CustomerService.php';
         <input type="text" name="zip" size="5" required/>
         <br/>
         <label for="phone" ><em>*</em> Phone:</label>
-        <input type="text" name="phoneNumber" size="12" required/>
+        <input type="text" name="phone" size="12" required/>
         <br/>
         <label for="numOfAdults" ><em>*</em> # of Adults:</label>
         <input type="number" name="numOfAdults" id="numAdults" min="0" value="0" required/>
@@ -119,8 +112,8 @@ require_once 'services/CustomerService.php';
             <option value="Other">Other</option>
         </select>
         <br/>
-        <label for="attendee" ><em>*</em> BCC Attendee?</label>
-        <select id="attendee" name="attendee">
+        <label for="isAttendee" ><em>*</em> BCC Attendee?</label>
+        <select id="isAttendee" name="isAttendee">
             <option value="0">No</option>
             <option value="1">Yes</option>
         </select>
