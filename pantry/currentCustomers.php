@@ -2,10 +2,10 @@
 include_once 'common/showErrors.php';
 require_once 'services/CustomerService.php';
 
-//if(isset($_GET['action']) && $_GET['action'] == 'getCustomers') {
-//    $cs = new CustomerService();
-//    $cs->getCustomers();
-//}
+if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
+    $cs = new CustomerService();
+    $cs->updateCustomer();
+}
 ?>
 <html>
 <head>

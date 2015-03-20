@@ -10,6 +10,21 @@ require_once $rootPath . 'models/Customer.php';
 class CustomerService {
 
     public function addCustomer() {
+        $customer = ORM::for_table('Customer')->create();
+        $this->setValuesAndSave($customer);
+    }
+
+    public function updateCustomer() {
+        $customer = \models\Customer::whereIdIs($_POST['id'])->findOne();
+
+        if(false === $customer) {
+            return http_response_code(400);
+        } else {
+            $this->setValuesAndSave($customer);
+        }
+    }
+
+    private function setValuesAndSave($customer) {
         $fNameValid = $_POST['firstName'];
         $lNameValid = $_POST['lastName'];
         $streetValid = $_POST['street'];
@@ -18,12 +33,11 @@ class CustomerService {
         $zipValid = $_POST['zip'];
         $numKidsValid = $_POST['numOfKids'];
         $numAdultsValid = $_POST['numOfAdults'];
-        $phonenumberValid = $_POST['phonenumber'];
+        $phonenumberValid = $_POST['phoneNumber'];
         $ethnicityValid = $_POST['ethnicity'];
         $attendeeValid = $_POST['attendee'];
         $serviceValid = $_POST['service'];
 
-        $customer = ORM::for_table('Customer')->create();
         $customer->first_name = $fNameValid;
         $customer->last_name = $lNameValid;
         $customer->street = $streetValid;
@@ -35,34 +49,9 @@ class CustomerService {
 //        $customer->phone = $phonenumberValid;
         $customer->ethnicity = $ethnicityValid;
         $customer->service = $serviceValid;
-        $customer->is_attendee = false;
+        $customer->is_attendee = $attendeeValid;
 
         $customer->save();
+        $test = '';
     }
-
-    public function getCustomers() {
-        $customers = \models\Customer::findMany();
-        $customerArray = array();
-
-        foreach($customers as $customer) {
-            //echo json_encode($customer->asArray());
-//            $customerJson = json_encode($customer->asArray());
-            array_push($customerArray, $customer->asArray());
-        }
-
-        echo chop(json_encode($customerArray));
-    }
-
-//$customers = \models\Customer::findMany();
-//$customerJson = "[";
-//
-//foreach($customers as $customer) {
-//    //echo json_encode($customer->asArray());
-//$customerJson .= json_encode($customer->asArray()) . ",";
-//}
-//
-//$customerJson = substr($customerJson, 0, -1);
-//$customerJson .= "]";
-//
-//echo $customerJson;
 }

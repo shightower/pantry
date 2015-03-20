@@ -1,6 +1,3 @@
-var ALL_CUST_URL = 'rest/customer/all';
-var SEARCH_BY_NAME_URL = 'rest/customer/search/name';
-var EDIT_URL = 'rest/customer/update';
 
 var filterCondition = 'contains';
 var or_filter_operator = 0;
@@ -192,41 +189,35 @@ $(document).ready(function () {
 			params += 'numOfAdults=' + $('#numOfAdults').val() + '&';
 			params += 'numOfKids=' + $('#numOfKids').val() + '&';
 			params += 'ethnicity=' + $('#ethnicity').val() + '&';
-			params += 'isAttendee=' + $('#isAttendee').val() + '&';
-			params += 'service=' + $('#service').val();
-			
-			//send update request
-			$.ajax({
-				type: 'GET',
-				url: 'rest/customer/update',
-				contentType: 'text/plain',
-				data: params,
-				success: function(data, status) {
-					$('#popupWindow').jqxWindow('close');
-					
-					var n = noty({
-						layout: 'center',
-						type: 'success', 
-						text: '<h3>Update Applied Successfully</h3>',
-						timeout: 750,
-						callback: {
-							afterClose: function() {
-								
-								//refresh page, and force manual pull of new data
-								location.reload(true);
-							}
-						}
-					});
-				},
-				error: function(xhr, status) {
-					var n = noty({
-						layout: 'center',
-						type: 'error', 
-						text: '<h3>Unable to Update Customer</h3>',
-						timeout: 5000
-					});
-				}
-			});
+			params += 'attendee=' + $('#isAttendee').val() + '&';
+			params += 'service=' + $('#service').val() + '&';
+            params += 'action=updateCustomer';
+
+            $.post('currentCustomers.php', params, function(resp) {
+                $('#popupWindow').jqxWindow('close');
+
+                var n = noty({
+                    layout: 'center',
+                    type: 'success',
+                    text: '<h3>Update Applied Successfully</h3>',
+                    timeout: 750,
+                    callback: {
+                        afterClose: function() {
+
+                            //refresh page, and force manual pull of new data
+                            location.reload(true);
+                        }
+                    }
+                });
+
+            }).fail(function() {
+                var n = noty({
+                    layout: 'center',
+                    type: 'error',
+                    text: '<h3>Unable to Update Customer</h3>',
+                    timeout: 5000
+                });
+            });
 		});		
 });
 
