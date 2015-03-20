@@ -49,22 +49,22 @@ $(document).ready(function () {
 			datatype: "json",
 			datafields: [
 				{ name: 'id', type: 'int'},
-				{ name: 'firstName', type: 'string' },
-				{ name: 'lastName', type: 'int' },
+				{ name: 'first_name', type: 'string' },
+				{ name: 'last_name', type: 'string' },
 				{ name: 'street', type: 'string' },
 				{ name: 'city', type: 'string' },
 				{ name: 'state', type: 'string' },
 				{ name: 'zip', type: 'string' },
-				{ name: 'phoneNumber', type: 'string' },
-				{ name: 'numOfAdults', type: 'string' },
-				{ name: 'numOfKids', type: 'string' },
+				{ name: 'phone', type: 'string' },
+				{ name: 'num_adults', type: 'int' },
+				{ name: 'num_kids', type: 'int' },
 				{ name: 'ethnicity', type: 'string' },
-				{ name: 'isAttendee', type: 'bool' },
+				{ name: 'is_attendee', type: 'bool' },
 				{ name: 'service', type: 'string' }
 			],
-			root: 'data',
 			id: 'id',
-			url: ALL_CUST_URL
+			url: 'customers.php',
+            type: 'GET'
 		};
 		
 		//set width and height for popup editor
@@ -96,8 +96,10 @@ $(document).ready(function () {
 		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
 			downloadComplete: function (data, status, xhr) {
+                var x = 0;
 			},
 			loadComplete: function (data) {
+                var x = 0;
 			},
 			loadError: function (xhr, status, error) {
 				alert('error occurred');
@@ -117,14 +119,14 @@ $(document).ready(function () {
 			theme: theme,
 			columns: [
 			  { text: 'Id', datafield: 'id', hidden: true},
-			  { text: 'First Name', datafield: 'firstName', filterable: true, align: 'center', width: 120, pinned: true },
-			  { text: 'Last Name', datafield: 'lastName', filterable: true, align: 'center', width: 140, pinned: true },
-			  { text: 'Phone Number', datafield: 'phoneNumber', align: 'center', width: 125 },
+			  { text: 'First Name', datafield: 'first_name', filterable: true, align: 'center', width: 120, pinned: true },
+			  { text: 'Last Name', datafield: 'last_name', filterable: true, align: 'center', width: 140, pinned: true },
+			  { text: 'Phone Number', datafield: 'phone', align: 'center', width: 125 },
 			  { text: 'Street', datafield: 'street', align: 'center', minwidth: 250},
 			  { text: 'City', datafield: 'city', align: 'center', width: 125  },
-			  { text: 'Adults', datafield: 'numOfAdults', align: 'center', width: 75, cellsalign: 'center'  },
-			  { text: 'Kids', datafield: 'numOfKids', align: 'center', width: 65, cellsalign: 'center' },
-			  { text: 'BCC Attendee', datafield: 'isAttendee', columntype: 'checkbox', align: 'center', width: 110, cellsalign: 'center' }
+			  { text: 'Adults', datafield: 'num_adults', align: 'center', width: 75, cellsalign: 'center'  },
+			  { text: 'Kids', datafield: 'num_kids', align: 'center', width: 65, cellsalign: 'center' },
+			  { text: 'BCC Attendee', datafield: 'is_attendee', columntype: 'checkbox', align: 'center', width: 110, cellsalign: 'center' }
 			]
 		});
 		
@@ -134,22 +136,22 @@ $(document).ready(function () {
 			 // get the clicked row's data and initialize the input fields.
 			 var dataRecord = $("#customersGrid").jqxGrid('getrowdata', editRow);
 			 $("#id").val(dataRecord.id);
-			 $("#firstName").val(dataRecord.firstName);
-			 $("#lastName").val(dataRecord.lastName);
-			 $("#phoneNumber").val(dataRecord.phoneNumber);
+			 $("#firstName").val(dataRecord.first_name);
+			 $("#lastName").val(dataRecord.last_name);
+			 $("#phoneNumber").val(dataRecord.phone);
 			 $("#street").val(dataRecord.street);
 			 $("#city").val(dataRecord.city);
 			 
 			 setSelectedIndex('state', dataRecord.state);
 			 //$("#state").val(dataRecord.state);
 			 $("#zip").val(dataRecord.zip);
-			 $("#numOfAdults").jqxNumberInput({ decimal: dataRecord.numOfAdults });
-			 $("#numOfKids").jqxNumberInput({ decimal: dataRecord.numOfKids });
+			 $("#numOfAdults").jqxNumberInput({ decimal: dataRecord.num_adults });
+			 $("#numOfKids").jqxNumberInput({ decimal: dataRecord.num_kids });
 			 
 			 setSelectedIndex('ethnicity', dataRecord.ethnicity);
 			 //$("#ethnicity").val(dataRecord.ethnicity);
 			 
-			 setSelectedIndex('isAttendee', dataRecord.isAttendee);
+			 setSelectedIndex('isAttendee', dataRecord.is_attendee);
 			 //$("#isAttendee").val(dataRecord.isAttendee);
 			 
 			 setSelectedIndex('service', dataRecord.service);
