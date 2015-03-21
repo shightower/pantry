@@ -1,7 +1,3 @@
-var ALL_CUST_URL = 'rest/customer/all';
-var SEARCH_BY_NAME_URL = 'rest/customer/search/name';
-var ADD_ORDER_URL = 'rest/orders/new';
-var ADD_TEFAP_ORDER_URL = 'rest/orders/tefap/new';
 
 var lastNameFilterGroup = new $.jqx.filter();
 var firstNameFilterGroup = new $.jqx.filter();
@@ -85,13 +81,12 @@ $(document).ready(function () {
 			datafields: [
 				{ name: 'id', type: 'int'},
 				{ name: 'firstName', type: 'string' },
-				{ name: 'lastName', type: 'int' },
-				{ name: 'phoneNumber', type: 'string' },
+				{ name: 'lastName', type: 'string' },
+				{ name: 'phone', type: 'string' },
 				{ name: 'nextAvailableDate', type: 'date' }
 			],
-			root: 'data',
 			id: 'id',
-			url: ALL_CUST_URL
+			url: 'customers.php'
 		};
 		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
@@ -116,9 +111,9 @@ $(document).ready(function () {
 			theme: theme,
 			columns: [
 			  { text: 'Order Number', datafield: 'id', hidden: true},
-			  { text: 'First Name', datafield: 'firstName', filterable: true, align: 'center', width: 120, },
+			  { text: 'First Name', datafield: 'firstName', filterable: true, align: 'center', width: 120 },
 			  { text: 'Last Name', datafield: 'lastName', filterable: true, align: 'center', width: 145 },
-			  { text: 'Phone Number', datafield: 'phoneNumber', align: 'center', width: 125 },
+			  { text: 'Phone Number', datafield: 'phone', align: 'center', width: 125 },
 			  { text: 'Next Order Date', datafield: 'nextAvailableDate', align: 'center', width: 150, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
 			  { text: 'New Order', datafield: 'New Order', columntype: 'button', width: 125, cellsrenderer: function()
 				{
@@ -126,6 +121,7 @@ $(document).ready(function () {
 				}, buttonclick: function(row) {					
 					// prompt user for confirmation before adding new order
 					var r = confirm("Create new order?");
+                    var orderType = "regular";
 					if (r == true) {
 						selectedCustomer = row;
 					
@@ -135,7 +131,7 @@ $(document).ready(function () {
 						 //ajax call to create new order						 
 						 if(checkNextAvailableDate(dataRecord.nextAvailableDate)) {
 							//ajax call to create new order
-							submitNewOrder(dataRecord.id, ADD_ORDER_URL);
+							submitNewOrder(dataRecord.id, orderType);
 						 } else {
 							selectedCustomer = -1;
 						 }
@@ -150,6 +146,8 @@ $(document).ready(function () {
 				}, buttonclick: function(row) {				
 					// prompt user for confirmation before adding new order
 					var r = confirm("Create new TEFAP order?");
+                    var orderType = "tefap";
+
 					if (r == true) {
 						selectedCustomer = row;
 					
@@ -158,7 +156,7 @@ $(document).ready(function () {
 						 
 						 if(checkNextAvailableDate(dataRecord.nextAvailableDate)) {
 							//ajax call to create new order
-							submitNewOrder(dataRecord.id, ADD_TEFAP_ORDER_URL);
+							submitNewOrder(dataRecord.id, orderType);
 						 } else {
 							selectedCustomer = -1;
 						 }
@@ -192,38 +190,32 @@ function checkNextAvailableDate(nextAvailableDate) {
 	}
 }
 
-function submitNewOrder(customerId, path) {
+function submitNewOrder(customerId, orderType) {
 	
-	var params = 'customerId=';
-	params += customerId;
-	
-	//send update request
-	$.ajax({
-		type: 'GET',
-		url: path,
-		contentType: 'text/plain',
-		data: params,
-		success: function(data, status) {
-			var n = noty({
-				layout: 'center',
-				type: 'success', 
-				text: '<h3>New Order Adding to Pending List</h3>',
-				timeout: 1250
-			});
-		},
-		error: function(xhr, status) {
-			var text = '<h3>Unable to Update Customer</h3>';
-			text += 'Reason: ';
-			text += xhr.responseText;
-			
-			var n = noty({
-				layout: 'center',
-				type: 'error', 
-				text: text,
-				timeout: 5000
-			});
-		}
-	});
+	var params = 'customerId=' + customerId + '&';
+    params += 'type=' + orderType + '&';
+    params += 'action=addOrder';
+
+    //send update request
+    $.post('addOrder.php', params, function(resp) {
+        noty({
+            layout: 'center',
+            type: 'success',
+            text: '<h3>New Order Adding to Pending List</h3>',
+            timeout: 1250
+        });
+    }).fail(function(xhr, status, error) {
+        var text = '<h3>Unable to Update Customer</h3>';
+        text += 'Reason: ';
+        text += xhr.statusText;
+
+        var n = noty({
+            layout: 'center',
+            type: 'error',
+            text: text,
+            timeout: 3000
+        });
+    });
 }
 
 function compactDate(date) {

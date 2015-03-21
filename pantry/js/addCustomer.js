@@ -30,7 +30,7 @@ $(document).ready(function () {
                 $('#addCustForm').find('input[type=text]').val('');
                 $('#state').val('Maryland');
                 $('#addCustForm').find('input[type=number]').val(0);
-            }).fail(function() {
+            }).fail(function(xhr, status, error) {
                 alert('failure. \n' + xhr);
             });
 		});
