@@ -1,1 +1,5 @@
 <?php
+
+const PENDING_STATUS = 'PENDING';
+const COMPLETE_STATUS = 'COMPLETE';
+const WAIT_PERIOD_DAYS = 45;
