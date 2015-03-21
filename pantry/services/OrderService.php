@@ -35,7 +35,6 @@ class OrderService {
     }
 
     public function completeOrder() {
-
         //first check to make sure a valid order number is provided and it is still pending.
         $orderId = $_POST['id'];
         $pendingOrder = \models\Order::where(array(
@@ -46,7 +45,6 @@ class OrderService {
         if($pendingOrder != null && $pendingOrder != false) {
             $pendingOrder->orderWeight = $_POST['orderWeight'];
             $pendingOrder->status = COMPLETE_STATUS;
-            $orderType = $pendingOrder->type;
 
             if($pendingOrder->type === OrderService::REGULAR_ORDER_TYPE) {
                 $pendingOrder->numBags = $_POST['numBags'];
@@ -66,6 +64,22 @@ class OrderService {
             http_response_code(400);
             header($_SERVER['SERVER_PROTOCOL']." 400 Could not find order, or order already completed.");
         }
+    }
+
+    public function deletePendingOrder() {
+        $orderId = $_POST['id'];
+        $pendingOrder = \models\Order::where(array(
+            'id' => $orderId,
+            'status' => PENDING_STATUS
+        ))->findOne();
+
+        if($pendingOrder != null && $pendingOrder != false) {
+            $pendingOrder->delete();
+        } else {
+            http_response_code(400);
+            header($_SERVER['SERVER_PROTOCOL']." 400 Could not find order, or order already completed.");
+        }
+
     }
 
     private function hasPendingOrder($customerId, $orderType) {

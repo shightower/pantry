@@ -8,6 +8,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'completeOrder') {
     $os = new OrderService();
     $os->completeOrder();
 }
+
+if(isset($_POST['action']) && $_POST['action'] == 'deletePending') {
+    $os = new OrderService();
+    $os->deletePendingOrder();
+}
 ?>
 <html>
 <head>

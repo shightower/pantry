@@ -252,39 +252,35 @@ function completeOrder(rowIndex) {
 }
 
 function deletePendingOrder(id) {
-	var params = 'id=' + id;
-	
-	//send update request
-	$.ajax({
-		type: 'GET',
-		url: DELETE_URL,
-		contentType: 'text/plain',
-		data: params,
-		success: function(data, status) {
-			
-			var n = noty({
-				layout: 'center',
-				type: 'success', 
-				text: '<h3>Order Removed!</h3>',
-				timeout: 750,
-				callback: {
-					afterClose: function() {
-						
-						//refresh page, and force manual pull of new data
-						location.reload(true);
-					}
-				}
-			});
-		},
-		error: function(xhr, status) {
-			var n = noty({
-				layout: 'center',
-				type: 'error', 
-				text: '<h3>Unable to Remove Order</h3>',
-				timeout: 1500
-			});
-		}
-	});
+	var params = 'id=' + id + '&';
+    params += 'action=deletePending';
+
+    //send update request
+    $.post('managePendingOrders.php', params, function(resp) {
+        $('#popupOrder').jqxWindow('close');
+        clearOrderPopup();
+
+        noty({
+            layout: 'center',
+            type: 'success',
+            text: '<h3>Order Removed!</h3>',
+            timeout: 750,
+            callback: {
+                afterClose: function() {
+
+                    //refresh page, and force manual pull of new data
+                    location.reload(true);
+                }
+            }
+        });
+    }).fail(function(xhr, status, error) {
+        noty({
+            layout: 'center',
+            type: 'error',
+            text: '<h3>Unable to Remove Order</h3>',
+            timeout: 1500
+        });
+    });
 }
 
 function clearOrderPopup() {
