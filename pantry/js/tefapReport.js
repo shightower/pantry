@@ -1,127 +1,92 @@
-var TEFAP_REPORT_URL = 'rest/orders/report/tefap';
-var BCC_MEMEBER_CHART_TITLE = "BCC Attendee Chart";
-var BCC_SERVICE_CHART_TITLE = "BCC Service Chart";
-var ETHNICITY_CHART_TITLE = "Ethnicity Chart";
-var PERSON_COMPOSITION_CHART_TITLE = "Age Group Chart";
-
-//Report Summary Table Titles
-var TOTAL_FAMILIES_TITLE = 'Total Families Served: ';
-var TOTAL_POUNDS_TITLE = 'Total Weight: ';
-var TOTAL_BCC_ATTENDEES_TITLE = 'Total BCC Members Served: ';
-var TOTAL_NONBCC_ATTENDEES_TITLE = 'Total Non-BCC Members Served:';
-var TOTAL_ADULTS_TITLE = 'Total Adults Served: ';
-var TOTAL_KIDS_TITLE = 'Total Kids Served: ';
-var TOTAL_TEFAP_COUNT_TITLE = 'Total TEFAP Count: ';
-
-
 $(document).ready(function() {
-	//hide reports section on initial load
-	$('#reportSummaryDiv').hide();
-	
-	//start date Jqx
-	$("#startDateSelection").jqxDateTimeInput({
-		width: '250px',
-		height: '25px',
-		formatString: 'dddd MMM dd, yyyy'
-	});
-	
-	//end date Jqx
-	$("#endDateSelection").jqxDateTimeInput({
-		width: '250px',
-		height: '25px',
-		formatString: 'dddd MMM dd, yyyy'
-	});
-	
-	//generate button
-	$("#generateTefapReportButton").jqxButton({
-		width: '250',
-		theme: theme
-	});
-	
-	//action taken when generate button clicked
-	$("#generateTefapReportButton").on('click', function () {
-		var params = validateDates();
-		
-		if(params != null) {
-			generateTefapReports(params);
-		}
-	});	
+    //hide reports section on initial load
+    $('#reportSummaryDiv').hide();
+
+    //start date Jqx
+    $("#startDateSelection").jqxDateTimeInput({
+        width: '250px',
+        height: '25px',
+        formatString: 'dddd MMM dd, yyyy'
+    });
+
+    //end date Jqx
+    $("#endDateSelection").jqxDateTimeInput({
+        width: '250px',
+        height: '25px',
+        formatString: 'dddd MMM dd, yyyy'
+    });
+
+    //generate button
+    $("#generateReportButton").jqxButton({
+        width: '200',
+        theme: theme
+    });
+
+    //action taken when generate button clicked
+    $("#generateReportButton").on('click', function () {
+        var params = validateDates();
+
+        if(params != null) {
+            generateReports(params);
+        }
+    });
 });
 
+function generateReports(params) {
+    var paramStr = 'startDate=' + params.startDate + '&';
+    paramStr += 'endDate=' + params.endDate + '&';
+    paramStr += 'action=generateTefapReport';
 
-function generateTefapReports(params) {				
-	var serviceData;
-	var ethnicityData;
-	var memberData = new Array();
-	var familyData = new Array();
-	var paramStr = 'startDate=' + params.startDate + '&';
-	paramStr += 'endDate=' + params.endDate;
-	
-	$.ajax({
-		type: 'GET',
-		url: TEFAP_REPORT_URL,
-		contentType: 'text/plain',
-		data: paramStr,
-		success: function(results, status) {
-			//show div containing reports summary
-			$('#reportSummaryDiv').show();
-			var data = results.data[0];
-			$('#totalFamilies').html(TOTAL_FAMILIES_TITLE + data.totalFamilies);
-			$('#totalWeight').html(TOTAL_POUNDS_TITLE + data.totalPounds + ' lbs');
-			$('#totalAdults').html(TOTAL_ADULTS_TITLE + data.totalAdults);
-			$('#totalKids').html(TOTAL_FAMILIES_TITLE + data.totalKids);
-			$('#totalBccAttendees').html(TOTAL_BCC_ATTENDEES_TITLE + data.totalBccAttendees);
-			$('#totalNonBccAttendees').html(TOTAL_NONBCC_ATTENDEES_TITLE + data.totalNonBccAttendees);
-			$('#totalTefapCount').html(TOTAL_TEFAP_COUNT_TITLE + data.totalTefapCount);
-			
-		},
-		error: function(xhr, status) {
-			alert('failure. \n' + xhr);
-		}
-	});
+    $.post('regularReport.php', paramStr, function(results, status) {
+        var data = JSON.parse(results);
+
+        //show div containing reports summary
+        $('#totalFamilies').html(data.totalFamilies);
+        $('#tefapCount').html(data.tefapCount);
+        $('#totalWeight').html(data.totalWeight + ' lbs');
+        $('#totalAdults').html( data.totalAdults);
+        $('#totalKids').html(data.totalKids);
+        //$('#totalBccAttendees').html(data.totalBccAttendees);
+        //$('#totalNonBccAttendees').html(data.totalNonBccAttendees);
+        $('#totalBccAttendees').html('0');
+        $('#totalNonBccAttendees').html('0');
+        $('#reportSummaryDiv').show();
+    }).fail(function(xhr, status, error) {
+        alert('failure. \n' + xhr);
+    });
 }
 
-function drawChart(title, dataSource, displayField, chart) {
-	// prepare jqxChart settings
-	var settings = {
-		title: title,
-		description: '',
-		backgroundImage: 'images/clear_background.jpg',
-		enableAnimations: true,
-		showLegend: true,
-		showBorderLine: false,
-		titlePadding: {
-			left: 0,
-			top: 0,
-			right: 0,
-			bottom: 10
-		},
-		source: dataSource,
-		colorScheme: 'scheme04',
-		seriesGroups: [{
-			type: 'pie',
-			showLabels: true,
-			series:
-				[{ 
-					dataField: 'total',
-					displayText: displayField,
-					initialAngle: 45,
-					radius: 130,
-					centerOffset: 0,
-					formatFunction: function (value) {
-						if (isNaN(value))
-							return value;
-							
-							if(value == 1) {
-								return value + ' Person';
-							} else {
-								return value + ' People';
-							}
-					},
-				}]
-		}]
-	};
-	
-	// setup the chart
-	$(chart).jqxChart(settings);
+function validateDates() {
+    var startDate = $('#startDateSelection').jqxDateTimeInput('getDate');
+    var endDate = $('#endDateSelection').jqxDateTimeInput('getDate');
+
+    //object to hold REST parameters
+    var params = new Object();
+
+    if(startDate == null) {
+        errorNotification('Please enter a valid starting date');
+        params = null;
+    } else if(endDate == null) {
+        errorNotification('Please enter a valid ending date');
+        params = null;
+    } else if(startDate > endDate) {
+        errorNotification('Ending date must come after Start date');
+        params = null;
+    } else {
+        startDate = startDate.toUTCString();
+        endDate = endDate.toUTCString();
+        params.startDate = startDate;
+        params.endDate = endDate;
+    }
+
+    return params;
+}
+
+function errorNotification(msg) {
+    noty({
+        layout: 'center',
+        type: 'error',
+        text: '<h3>' + msg + '</h3>',
+        timeout: 2000
+    });
 }

@@ -16,6 +16,7 @@ use \Carbon\Carbon;
 class OrderService {
     const REGULAR_ORDER_TYPE = "REGULAR";
     const TEFAP_ORDER_TYPE = "TEFAP";
+    const DATE_FORMAT = "D, d M Y H:i:s O";
 
     public function addOrder() {
         $customerId = $_POST['customerId'];
@@ -80,6 +81,78 @@ class OrderService {
             header($_SERVER['SERVER_PROTOCOL']." 400 Could not find order, or order already completed.");
         }
 
+    }
+
+    public function generateRegularOrderReport() {
+        $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
+        $startDate->hour = 0;
+        $startDate->minute = 0;
+        $startDate->second = 0;
+
+        $endDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['endDate']);
+        $endDate->hour = 23;
+        $endDate->minute = 59;
+        $endDate->second = 59;
+
+        $reportInfo = array();
+
+        $completedOrders = \models\Order::where(array(
+            'status' => COMPLETE_STATUS,
+            'type'=> OrderService::REGULAR_ORDER_TYPE
+        ))->where_raw('(orderDate between ? and ?)', array($startDate, $endDate))->findMany();
+
+        $reportInfo['totalWeight'] = 0;
+        $reportInfo['totalKids'] = 0;
+        $reportInfo['totalAdults'] = 0;
+        $reportInfo['totalFamilies'] = 0;
+
+        foreach($completedOrders as $order) {
+            $reportInfo['totalFamilies'] += 1;
+            $reportInfo['totalWeight'] += $order->orderWeight;
+            $customer = \models\Customer::findOne($order->customer_id);
+            $reportInfo['totalAdults'] += $customer->numAdults;
+            $reportInfo['totalKids'] += $customer->numKids;
+        }
+
+        echo json_encode($reportInfo);
+        exit();
+    }
+
+    public function generateTefapOrderReport() {
+        $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
+        $startDate->hour = 0;
+        $startDate->minute = 0;
+        $startDate->second = 0;
+
+        $endDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['endDate']);
+        $endDate->hour = 23;
+        $endDate->minute = 59;
+        $endDate->second = 59;
+
+        $reportInfo = array();
+
+        $completedOrders = \models\Order::where(array(
+            'status' =>COMPLETE_STATUS,
+            'type' => OrderService::TEFAP_ORDER_TYPE
+        ))->where_raw('(orderDate between ? and ?)', array($startDate, $endDate))->findMany();
+
+        $reportInfo['totalWeight'] = 0;
+        $reportInfo['totalKids'] = 0;
+        $reportInfo['totalAdults'] = 0;
+        $reportInfo['totalFamilies'] = 0;
+        $reportInfo['tefapCount'] = 0;
+
+        foreach($completedOrders as $order) {
+            $reportInfo['totalFamilies'] += 1;
+            $reportInfo['totalWeight'] += $order->orderWeight;
+            $customer = \models\Customer::findOne($order->customer_id);
+            $reportInfo['totalAdults'] += $customer->numAdults;
+            $reportInfo['totalKids'] += $customer->numKids;
+            $reportInfo['tefapCount'] += $order->tefapCount;
+        }
+
+        echo json_encode($reportInfo);
+        exit();
     }
 
     private function hasPendingOrder($customerId, $orderType) {
