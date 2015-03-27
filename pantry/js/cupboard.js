@@ -43,5 +43,17 @@ $(document).ready(function () {
 			closeEffect	: 'fade',
 			autoCenter	: true
 		});
+
+    $("#reminder").fancybox({
+        maxWidth	: 300,
+        maxHeight   : 100,
+        fitToView	: false,
+        width		: '30%',
+        height		: '15%',
+        autoSize	: false,
+        openEffect	: 'elastic',
+        closeEffect	: 'fade',
+        autoCenter	: true
+    });
 		
 });

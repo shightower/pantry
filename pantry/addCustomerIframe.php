@@ -13,7 +13,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
     <title></title>
     <link rel="stylesheet" href="css/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
-    <link rel="stylesheet" href="css/jqx.energyblue.css" type="text/css"/>
     <link rel="stylesheet" href="css/addCustomer.css" type="text/css"/>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>

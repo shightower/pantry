@@ -37,7 +37,7 @@ function generateReports(params) {
     paramStr += 'endDate=' + params.endDate + '&';
     paramStr += 'action=generateTefapReport';
 
-    $.post('regularReport.php', paramStr, function(results, status) {
+    $.post('tefapReport.php', paramStr, function(results, status) {
         var data = JSON.parse(results);
 
         //show div containing reports summary
@@ -46,10 +46,8 @@ function generateReports(params) {
         $('#totalWeight').html(data.totalWeight + ' lbs');
         $('#totalAdults').html( data.totalAdults);
         $('#totalKids').html(data.totalKids);
-        //$('#totalBccAttendees').html(data.totalBccAttendees);
-        //$('#totalNonBccAttendees').html(data.totalNonBccAttendees);
-        $('#totalBccAttendees').html('0');
-        $('#totalNonBccAttendees').html('0');
+        $('#totalBccAttendees').html(data.totalBccAttendees);
+        $('#totalNonBccAttendees').html(data.totalNonBccAttendees);
         $('#reportSummaryDiv').show();
     }).fail(function(xhr, status, error) {
         alert('failure. \n' + xhr);

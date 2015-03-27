@@ -35,11 +35,9 @@ $(document).ready(function() {
 function generateReports(params) {
 	var paramStr = 'startDate=' + params.startDate + '&';
 	paramStr += 'endDate=' + params.endDate + '&';
+    paramStr += 'action=generateRegularReport';
 
-    var regularReportParams = paramStr;
-    regularReportParams += 'action=generateRegularReport';
-
-    $.post('regularReport.php', regularReportParams, function(results, status) {
+    $.post('regularReport.php', paramStr, function(results, status) {
         var data = JSON.parse(results);
 
         //show div containing reports summary
@@ -47,31 +45,8 @@ function generateReports(params) {
         $('#totalWeight').html(data.totalWeight + ' lbs');
         $('#totalAdults').html( data.totalAdults);
         $('#totalKids').html(data.totalKids);
-        //$('#totalBccAttendees').html(data.totalBccAttendees);
-        //$('#totalNonBccAttendees').html(data.totalNonBccAttendees);
-        $('#totalBccAttendees').html('0');
-        $('#totalNonBccAttendees').html('0');
-        $('#reportSummaryDiv').show();
-    }).fail(function(xhr, status, error) {
-        alert('failure. \n' + xhr);
-    });
-
-    var tefapReportParams = paramStr;
-    tefapReportParams += 'action=generateTefapReport';
-
-    $.post('regularReport.php', tefapReportParams, function(results, status) {
-        var data = JSON.parse(results);
-
-        //show div containing reports summary
-        $('#totalFamilies').html(data.totalFamilies);
-        $('#tefapCount').html(data.tefapCount);
-        $('#totalWeight').html(data.totalWeight + ' lbs');
-        $('#totalAdults').html( data.totalAdults);
-        $('#totalKids').html(data.totalKids);
-        //$('#totalBccAttendees').html(data.totalBccAttendees);
-        //$('#totalNonBccAttendees').html(data.totalNonBccAttendees);
-        $('#totalBccAttendees').html('0');
-        $('#totalNonBccAttendees').html('0');
+        $('#totalBccAttendees').html(data.totalBccAttendees);
+        $('#totalNonBccAttendees').html(data.totalNonBccAttendees);
         $('#reportSummaryDiv').show();
     }).fail(function(xhr, status, error) {
         alert('failure. \n' + xhr);

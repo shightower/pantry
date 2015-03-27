@@ -24,7 +24,8 @@ $(document).ready(function () {
 				{ name: 'tefap', type: 'bool' }
 			],
 			id: 'id',
-			url: 'pendingOrders.php'
+			url: 'pendingOrders.php',
+            type: 'POST'
 		};
 		
 		//default height for all input fields

@@ -15,6 +15,7 @@ require_once 'common/sessionCheck.php';
     <link rel="stylesheet" href="css/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
+    <link rel="stylesheet" href="css/home.css" type="text/css"/>
     <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
@@ -29,7 +30,7 @@ require_once 'common/sessionCheck.php';
     </div>
     <div id='menuBar'>
         <ul>
-            <li><a href="#">Welcome</a></li>
+            <li><a href="home.php">Welcome</a></li>
             <li>Customers
                 <ul>
                     <li><a id="addCustFrame" data-fancybox-type="iframe" href="addCustomerIframe.php">New</a></li>
@@ -39,13 +40,18 @@ require_once 'common/sessionCheck.php';
             <li>Orders
                 <ul>
                     <li><a href="addOrder.php">Add</a></li>
-                    <li><a href="pendingOrders.php">Pending</a></li>
+                    <li><a href="managePendingOrders.php">Pending</a></li>
                 </ul>
             </li>
             <li>Reports
                 <ul>
                     <li><a href="regularReport.php">Regular Report</a></li>
                     <li><a href="tefapReport.php">TEFAP Report</a></li>
+                </ul>
+            </li>
+            <li>Help
+                <ul>
+                    <li><a id="reminder" data-fancybox-type="iframe" href="reminderIframe.php">45 Day Counter</a></li>
                 </ul>
             </li>
         </ul>
@@ -61,8 +67,10 @@ require_once 'common/sessionCheck.php';
         </p>
     </div>
 
-    <h2><center><u>Hours of Operation<u><center></h2>
+    <div style="text-align: center; text-decoration: underline; font-size: 1.65em;">Hours of Operation</div>
+    <br/>
     <table class="indexTable centeredBlock" border="1">
+        <thead>
         <tr>
             <th>Sunday</th>
             <th>Monday</th>
@@ -72,20 +80,20 @@ require_once 'common/sessionCheck.php';
             <th>Friday</th>
             <th>Saturday</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
             <td>
-                <ul>
-                    <li>10am-11am</li>
-                    <li>12pm-1pm</li>
-                </ul>
+                <span>30 Minutes after each service.</span>
             </td>
             <td>Closed</td>
-            <td>&nbsp</td>
+            <td>6pm to 7pm</td>
             <td>Closed</td>
             <td>Closed</td>
             <td>Closed</td>
-            <td>nbsp</td>
+            <td>10am to 11am</td>
         </tr>
+        </tbody>
     </table>
     <div class="bottomPadding">&nbsp</div>
 

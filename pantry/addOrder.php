@@ -42,7 +42,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
             <li>Orders
                 <ul>
                     <li><a href="#">Add</a></li>
-                    <li><a href="pendingOrders.php">Pending</a></li>
+                    <li><a href="managePendingOrders.php">Pending</a></li>
                 </ul>
             </li>
             <li>Reports

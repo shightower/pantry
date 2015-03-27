@@ -1,0 +1,26 @@
+table {
+    width: 90%;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+    border-style: none;
+    padding: 0;
+    border-spacing: 0;
+}
+
+tbody td {
+    width: 14%;
+    font-size: 1.25em;
+    background-color: #9D9687;
+    padding-left: 15px;
+}
+
+thead th {
+    width: 14%;
+    background-color: #FEDC6A;
+    padding-left: 15px;
+    font-size: 1.65em;
+}
+
+

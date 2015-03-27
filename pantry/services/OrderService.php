@@ -16,6 +16,7 @@ use \Carbon\Carbon;
 class OrderService {
     const REGULAR_ORDER_TYPE = "REGULAR";
     const TEFAP_ORDER_TYPE = "TEFAP";
+    const IS_ATTENDEE = "1";
     const DATE_FORMAT = "D, d M Y H:i:s O";
 
     public function addOrder() {
@@ -33,6 +34,22 @@ class OrderService {
             http_response_code(400);
             header($_SERVER['SERVER_PROTOCOL']." 400 User already has pending order.");
         }
+    }
+
+    public function getPendingOrders() {
+        $pendingOrders = \models\Order::where('status', PENDING_STATUS)->findMany();
+        $pendingOrderArray = array();
+
+        foreach($pendingOrders as $order) {
+            $customer = \models\Customer::findOne($order->customer_id);
+            $orderAsArray = $order->asArray();
+            $orderAsArray['customerFirstName'] = $customer->firstName;
+            $orderAsArray['customerLastName'] = $customer->lastName;
+            array_push($pendingOrderArray, $orderAsArray);
+        }
+
+        echo json_encode($pendingOrderArray);
+        exit();
     }
 
     public function completeOrder() {
@@ -105,6 +122,8 @@ class OrderService {
         $reportInfo['totalKids'] = 0;
         $reportInfo['totalAdults'] = 0;
         $reportInfo['totalFamilies'] = 0;
+        $reportInfo['totalBccAttendees'] = 0;
+        $reportInfo['totalNonBccAttendees'] = 0;
 
         foreach($completedOrders as $order) {
             $reportInfo['totalFamilies'] += 1;
@@ -112,6 +131,12 @@ class OrderService {
             $customer = \models\Customer::findOne($order->customer_id);
             $reportInfo['totalAdults'] += $customer->numAdults;
             $reportInfo['totalKids'] += $customer->numKids;
+
+            if($customer->isAttendee === OrderService::IS_ATTENDEE) {
+                $reportInfo['totalBccAttendees'] += 1;
+            } else {
+                $reportInfo['totalNonBccAttendees'] += 1;
+            }
         }
 
         echo json_encode($reportInfo);
@@ -141,6 +166,8 @@ class OrderService {
         $reportInfo['totalAdults'] = 0;
         $reportInfo['totalFamilies'] = 0;
         $reportInfo['tefapCount'] = 0;
+        $reportInfo['totalBccAttendees'] = 0;
+        $reportInfo['totalNonBccAttendees'] = 0;
 
         foreach($completedOrders as $order) {
             $reportInfo['totalFamilies'] += 1;
@@ -149,6 +176,12 @@ class OrderService {
             $reportInfo['totalAdults'] += $customer->numAdults;
             $reportInfo['totalKids'] += $customer->numKids;
             $reportInfo['tefapCount'] += $order->tefapCount;
+
+            if($customer->isAttendee === OrderService::IS_ATTENDEE) {
+                $reportInfo['totalBccAttendees'] += 1;
+            } else {
+                $reportInfo['totalNonBccAttendees'] += 1;
+            }
         }
 
         echo json_encode($reportInfo);

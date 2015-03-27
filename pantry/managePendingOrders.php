@@ -13,6 +13,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'deletePending') {
     $os = new OrderService();
     $os->deletePendingOrder();
 }
+
+if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
+    $os = new OrderService();
+    $os->getPendingOrders();
+}
 ?>
 <html>
 <head>
@@ -90,7 +95,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'deletePending') {
                 </tr>
                 <tr>
                     <td align="right">Number of Bags:</td>
-                    <td align="left"><input id="numBags" type="number" min="1" step="1"/></td>
+                    <td align="left"><input id="numBags" type="number" min="1" step="1" disabled/></td>
                 </tr>
                 <tr>
                     <td align="right">Order Weight:</td>

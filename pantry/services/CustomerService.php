@@ -33,10 +33,14 @@ class CustomerService {
         $zip = $_POST['zip'];
         $numKids = $_POST['numOfKids'];
         $numAdults = $_POST['numOfAdults'];
-        $phone = $_POST['phoneNumber'];
+        $phone = 0; //$_POST['phoneNumber'];
         $ethnicity = $_POST['ethnicity'];
-        $isAttendee = $_POST['attendee'];
-        $service = $_POST['service'];
+        $isAttendee = $_POST['isAttendee'];
+        $service = "n/a";
+
+        if($isAttendee === "1") {
+            $service = $_POST['service'];
+        }
 
         $customer->firstName = $firstName;
         $customer->lastName = $lastName;
@@ -46,11 +50,12 @@ class CustomerService {
         $customer->zip = $zip;
         $customer->numAdults = $numAdults;
         $customer->numKids = $numKids;
-        $customer->phone = $phone;
+        //$customer->phone = $phone;
         $customer->ethnicity = $ethnicity;
         $customer->service = $service;
         $customer->isAttendee = $isAttendee;
 
         $customer->save();
+        var_dump($customer);
     }
 }

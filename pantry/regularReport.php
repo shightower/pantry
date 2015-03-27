@@ -8,11 +8,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReport') {
     $os = new OrderService();
     $os->generateRegularOrderReport();
 }
-
-if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReport') {
-    $os = new OrderService();
-    $os->generateTefapOrderReport();
-}
 ?>
 <html>
 <head>
@@ -47,7 +42,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReport') {
             <li>Orders
                 <ul>
                     <li><a href="addOrder.php">Add</a></li>
-                    <li><a href="pendingOrders.php">Pending</a></li>
+                    <li><a href="managePendingOrders.php">Pending</a></li>
                 </ul>
             </li>
             <li>Reports

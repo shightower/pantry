@@ -153,13 +153,8 @@ $(document).ready(function () {
 					
 						 // get the clicked row's data and initialize the input fields.
 						 var dataRecord = $("#addOrderGrid").jqxGrid('getrowdata', selectedCustomer);
-						 
-						 if(checkNextAvailableDate(dataRecord.nextAvailableDate)) {
-							//ajax call to create new order
-							submitNewOrder(dataRecord.id, orderType);
-						 } else {
-							selectedCustomer = -1;
-						 }
+
+                        submitNewOrder(dataRecord.id, orderType);
 					} else {
 						selectedCustomer = -1;
 					}				 
