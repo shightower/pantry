@@ -29,6 +29,29 @@ class OrderService {
             $newOrder->customer_id = $customerId;
             $newOrder->orderDate = Carbon::now();
             $newOrder->type = $orderType;
+            $customer = \models\Customer::findOne($customerId);
+            $totalPeople = $customer->numKids + $customer->numAdults;
+
+            if($orderType == OrderService::REGULAR_ORDER_TYPE) {
+                if($newOrder->orderDate->dayOfWeek == Carbon::TUESDAY || $newOrder->orderDate->dayOfWeek == Carbon::SATURDAY) {
+                    if($totalPeople <= 3) {
+                        $newOrder->numBags = 2;
+                    } else if($totalPeople > 3 && $totalPeople <= 5) {
+                        $newOrder->numBags = 3;
+                    } else {
+                        $newOrder->numBags = 4;
+                    }
+                } else {
+                    if($totalPeople <= 3) {
+                        $newOrder->numBags = 1;
+                    } else if($totalPeople > 3 && $totalPeople <= 5) {
+                        $newOrder->numBags = 2;
+                    } else {
+                        $newOrder->numBags = 3;
+                    }
+                }
+            }
+
             $newOrder->save();
         } else {
             http_response_code(400);
@@ -68,7 +91,7 @@ class OrderService {
                 $pendingOrder->numBags = $_POST['numBags'];
                 $pendingOrder->save();
 
-                //Upate the Customer's next availble order date
+                // Update the Customer's next available order date
                 $customer = \models\Customer::findOne($pendingOrder->customer_id);
                 $nextAvailableDate = Carbon::now()->addDays(WAIT_PERIOD_DAYS);
                 $customer->lastOrderDate = Carbon::now();

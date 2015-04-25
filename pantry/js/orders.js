@@ -246,6 +246,7 @@ function completeOrder(rowIndex) {
 		$("#firstName").val(dataRecord.customerFirstName);
 		$("#lastName").val(dataRecord.customerLastName);
 		$("#orderDate").val(formatDate(dataRecord.orderDate));
+         $("#numBags").val(dataRecord.numBags);
 		 
 		// show the popup window.
 		$("#popupOrder").jqxWindow('open');

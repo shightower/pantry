@@ -95,7 +95,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
                 </tr>
                 <tr>
                     <td align="right">Number of Bags:</td>
-                    <td align="left"><input id="numBags" type="number" min="1" step="1" disabled/></td>
+                    <td align="left"><input id="numBags" type="number" min="1" step="1" /></td>
                 </tr>
                 <tr>
                     <td align="right">Order Weight:</td>
