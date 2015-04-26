@@ -33,7 +33,7 @@ class CustomerService {
         $zip = $_POST['zip'];
         $numKids = $_POST['numOfKids'];
         $numAdults = $_POST['numOfAdults'];
-        $phone = 0; //$_POST['phoneNumber'];
+        $phone = $_POST['phone'];
         $ethnicity = $_POST['ethnicity'];
         $isAttendee = $_POST['isAttendee'];
         $service = "n/a";
@@ -50,7 +50,7 @@ class CustomerService {
         $customer->zip = $zip;
         $customer->numAdults = $numAdults;
         $customer->numKids = $numKids;
-        //$customer->phone = $phone;
+        $customer->phone = $phone;
         $customer->ethnicity = $ethnicity;
         $customer->service = $service;
         $customer->isAttendee = $isAttendee;

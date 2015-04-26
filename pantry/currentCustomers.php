@@ -22,6 +22,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
     <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
     <script type="text/javascript" src="js/customers.js"></script>
+    <script type="text/javascript" src="js/jquery.mask.min.js"></script>
 </head>
 <body>
 <div id='content' class='content centeredBlock'>
@@ -88,7 +89,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                 </tr>
                 <tr>
                     <td align="right">Phone:</td>
-                    <td align="left"><input id="phone" /></td>
+                    <td align="left"><input id="phone" class="us_phone"/></td>
                 </tr>
                 <tr>
                     <td align="right">Street:</td>
@@ -164,7 +165,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                     <td align="right"># of Adults:</td>
                     <td align="left"><div id="numAdults"></div></td>
                 </tr>
-                <td align="right"># of Kids:</td>
+                <td align="right"># of Kids (Under age of 12):</td>
                 <td align="left"><div id="numKids"></div></td>
                 </tr>
                 <tr>

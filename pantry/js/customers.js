@@ -5,6 +5,8 @@ var or_filter_operator = 0;
 $(document).ready(function () {
 		//initially hide the clear filter div
 		$('#clearSearchDiv').hide();
+
+        $('.us_phone').mask('(000) 000-0000');
 		
 		//Round Search
 		$('#searchBox').corner('5px');
@@ -77,7 +79,7 @@ $(document).ready(function () {
 		$("#state").height(defaultHeight);
 		$("#zip").width(75);
 		$("#zip").height(defaultHeight);
-		$("#phone").width(100);
+		$("#phone").width(125);
 		$("#phone").height(defaultHeight);
 		$("#ethnicity").width(150);
 		$("#ethnicity").height(defaultHeight);

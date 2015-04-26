@@ -19,6 +19,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript" src="js/default.js"></script>
     <script type="text/javascript" src="js/addCustomer.js"></script>
+    <script type="text/javascript" src="js/jquery.mask.min.js"></script>
 </head>
 <body>
 <div class="addFormDiv">
@@ -94,12 +95,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
         <input type="text" name="zip" size="5" required/>
         <br/>
         <label for="phone" ><em>*</em> Phone:</label>
-        <input type="text" name="phone" size="12" required/>
+        <input type="text" name="phone" class="us_phone" size="12" required/>
         <br/>
         <label for="numOfAdults" ><em>*</em> # of Adults:</label>
         <input type="number" name="numOfAdults" id="numAdults" min="0" value="0" required/>
         <br/>
-        <label for="numOfKids" ><em>*</em> # of Kids:</label>
+        <label for="numOfKids" ><em>*</em> # of Kids (Under age of 12):</label>
         <input type="number" name="numOfKids" id="numKids" min="0" value="0" required/>
         <br/>
         <label for="ethnicity" ><em>*</em> Ethnicity:</label>
