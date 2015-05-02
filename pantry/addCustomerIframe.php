@@ -105,11 +105,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'addUser') {
         <br/>
         <label for="ethnicity" ><em>*</em> Ethnicity:</label>
         <select name="ethnicity">
-            <option value="African American">African American</option>
             <option value="Asian">Asian</option>
-            <option value="Caucasian">Caucasian</option>
+            <option value="Black or African American">Black or African American</option>
             <option value="Hispanic">Hispanic</option>
-            <option value="Other">Other</option>
+            <option value="Native American or Alaskan Native">Native American or Alaskan Native</option>
+            <option value="Native Hawaiian or Pacific Islander">Native Hawaiian or Pacific Islander</option>
+            <option value="White">White</option>
         </select>
         <br/>
         <label for="isAttendee" ><em>*</em> BCC Attendee?</label>

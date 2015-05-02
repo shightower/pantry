@@ -211,6 +211,21 @@ class OrderService {
         exit();
     }
 
+    public function getCompletedOrders() {
+        $completedOrders = \models\Order::where('status', COMPLETE_STATUS)->order_by_desc('orderDate')->findMany();
+        $completedOrderArray = array();
+
+        foreach($completedOrders as $order) {
+            $customer = \models\Customer::findOne($order->customer_id);
+            $orderAsArray = $order->asArray();
+            $orderAsArray['customerFirstName'] = $customer->firstName;
+            $orderAsArray['customerLastName'] = $customer->lastName;
+            array_push($completedOrderArray, $orderAsArray);
+        }
+
+        echo json_encode($completedOrderArray);
+    }
+
     private function hasPendingOrder($customerId, $orderType) {
         $hasPending = false;
         $count = \models\Order::where(array(

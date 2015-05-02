@@ -172,11 +172,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                     <td align="right">Ethnicity:</td>
                     <td>
                         <select name="ethnicity" id="ethnicity">
-                            <option value="African American">African American</option>
                             <option value="Asian">Asian</option>
-                            <option value="Caucasian">Caucasian</option>
+                            <option value="Black or African American">Black or African American</option>
                             <option value="Hispanic">Hispanic</option>
-                            <option value="Other">Other</option>
+                            <option value="Native American or Alaskan Native">Native American or Alaskan Native</option>
+                            <option value="Native Hawaiian or Pacific Islander">Native Hawaiian or Pacific Islander</option>
+                            <option value="White">White</option>
                         </select>
                     </td>
                 </tr>

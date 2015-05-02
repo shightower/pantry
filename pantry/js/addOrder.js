@@ -83,6 +83,7 @@ $(document).ready(function () {
 				{ name: 'firstName', type: 'string' },
 				{ name: 'lastName', type: 'string' },
 				{ name: 'phone', type: 'string' },
+                { name: 'lastOrderDate', type: 'date' },
 				{ name: 'nextAvailableDate', type: 'date' }
 			],
 			id: 'id',
@@ -102,7 +103,7 @@ $(document).ready(function () {
 		var selectedCustomer = -1;
 		// initialize jqxGrid
 		$("#addOrderGrid").jqxGrid({
-			width: 815,
+			width: 965,
 			source: dataAdapter,                
 			pageable: true,
 			autoheight: true,
@@ -114,6 +115,7 @@ $(document).ready(function () {
 			  { text: 'First Name', datafield: 'firstName', filterable: true, align: 'center', width: 120 },
 			  { text: 'Last Name', datafield: 'lastName', filterable: true, align: 'center', width: 145 },
 			  { text: 'Phone Number', datafield: 'phone', align: 'center', width: 125 },
+              { text: 'Last Order Date', datafield: 'lastOrderDate', align: 'center', width: 150, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
 			  { text: 'Next Order Date', datafield: 'nextAvailableDate', align: 'center', width: 150, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
 			  { text: 'New Order', datafield: 'New Order', columntype: 'button', width: 125, cellsrenderer: function()
 				{
