@@ -218,7 +218,21 @@ $(document).ready(function () {
                     timeout: 5000
                 });
             });
-		});		
+		});
+
+    // export customers to PDF document
+    $("#pdfExport").click(function() {
+        var today = $.format.date(new Date(), "dd-MM-yyyy");
+        var fileName = 'Cupboard_Customers_' + today;
+        $("#customersGrid").jqxGrid('exportdata', 'pdf', fileName);
+    });
+
+    // export customers to Excel document
+    $("#excelExport").click(function() {
+        var today = $.format.date(new Date(), "dd-MM-yyyy");
+        var fileName = 'Cupboard_Customers_' + today;
+        $("#customersGrid").jqxGrid('exportdata', 'xls', fileName);
+    });
 });
 
 function applyFilter() {
@@ -254,13 +268,6 @@ function applyFilter() {
 		
 		//show the clear filter option
 		$('#clearSearchDiv').show();								
-	} else {
-		var n = noty({
-				layout: 'center',
-				type: 'error', 
-				text: '<h3>Provide a Search Value</h3>',
-				timeout: 2500
-			});
 	}
 }
 

@@ -24,6 +24,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
     <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
     <script type="text/javascript" src="js/completedOrders.js"></script>
+    <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
 </head>
 <body>
 <div id='content' class='content centeredBlock'>
@@ -51,15 +52,30 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
                     <li><a href="tefapReport.php">TEFAP Report</a></li>
                 </ul>
             </li>
+            <li>Export
+                <ul id="export">
+                    <li id="pdfExport">PDF</li>
+                    <li id="excelExport">Excel</li>
+                </ul>
+            </li>
         </ul>
     </div>
 
     <div class='titleDiv'>
         <p id='pageTitle'>Completed Orders</p>
     </div>
+    <div class='searchInput'>
+        <center>
+            <input type='text' id='searchBox'/>
+            <input type='button' id='searchButton' value='Search'/>
+        </center>
+    </div>
     <!-- End of Common Content -->
 
-    <div id="completedOrdersGrid" class="centeredBlock"></div>
+    <div id="completedOrdersGrid" class="searchResults"></div>
+    <div id='clearSearchDiv' class="clearSearchDiv">
+        <input type='button' id='clearButton' value='Clear Search'/>
+    </div>
 
     <div class="bottomPadding">&nbsp</div>
 </div>

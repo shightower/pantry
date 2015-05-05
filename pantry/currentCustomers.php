@@ -23,6 +23,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
     <script type="text/javascript" src="js/cupboard.js"></script>
     <script type="text/javascript" src="js/customers.js"></script>
     <script type="text/javascript" src="js/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
 </head>
 <body>
 <div id='content' class='content centeredBlock'>
@@ -48,6 +49,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
                 <ul>
                     <li><a href="regularReport.php">Regular Report</a></li>
                     <li><a href="tefapReport.php">TEFAP Report</a></li>
+                </ul>
+            </li>
+            <li>Export
+                <ul id="export">
+                    <li id="pdfExport">PDF</li>
+                    <li id="excelExport">Excel</li>
                 </ul>
             </li>
         </ul>
