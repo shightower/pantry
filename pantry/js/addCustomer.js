@@ -20,13 +20,9 @@ $(document).ready(function () {
 			var params = $('#addCustForm').serialize();
 
             $.post('addCustomerIframe.php', params, function(resp) {
-                noty({
-                    layout: 'centerLeft',
-                    type: 'success',
-                    text: '<h3>Added Customer</h3>',
-                    timeout: 1500
-                });
 
+                parent.$.fancybox.close();
+                parent.jQuery.fancybox.close();
                 $('#addCustForm').find('input[type=text]').val('');
                 $('#state').val('Maryland');
                 $('#addCustForm').find('input[type=number]').val(0);
