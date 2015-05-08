@@ -1,8 +1,13 @@
+var REGULAR_ORDER_TYPE = "regular";
+var TEFAP_ORDER_TYPE = "tefap";
 
 var lastNameFilterGroup = new $.jqx.filter();
 var firstNameFilterGroup = new $.jqx.filter();
 var filterCondition = 'contains';
 var or_filter_operator = 1;
+var selectedRow = -1;
+var recordId = -1;
+var addTefap = false;
 
 $(document).ready(function () {
 		//initially hide the clear filter div
@@ -87,7 +92,8 @@ $(document).ready(function () {
 				{ name: 'nextAvailableDate', type: 'date' }
 			],
 			id: 'id',
-			url: 'customers.php'
+			url: 'currentCustomers.php?action=getAllCustomers',
+            type: 'GET'
 		};
 		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
@@ -103,7 +109,7 @@ $(document).ready(function () {
 		var selectedCustomer = -1;
 		// initialize jqxGrid
 		$("#addOrderGrid").jqxGrid({
-			width: 965,
+			width: 860,
 			source: dataAdapter,                
 			pageable: true,
 			autoheight: true,
@@ -116,74 +122,95 @@ $(document).ready(function () {
 			  { text: 'Last Name', datafield: 'lastName', filterable: true, align: 'center', width: 145 },
 			  { text: 'Phone Number', datafield: 'phone', align: 'center', width: 125 },
               { text: 'Last Order Date', datafield: 'lastOrderDate', align: 'center', width: 150, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
-			  { text: 'Next Order Date', datafield: 'nextAvailableDate', align: 'center', width: 150, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
-			  { text: 'New Order', datafield: 'New Order', columntype: 'button', width: 125, cellsrenderer: function()
+			  { text: 'Next Available Order Date', datafield: 'nextAvailableDate', align: 'center', width: 200, cellsalign: 'center', cellsformat: 'ddd M/dd/y'},
+			  { text: 'Create Order', datafield: 'New Order', columntype: 'button', width: 120, cellsrenderer: function()
 				{
 					return 'New Order';
-				}, buttonclick: function(row) {					
-					// prompt user for confirmation before adding new order
-					var r = confirm("Create new order?");
-                    var orderType = "regular";
-					if (r == true) {
-						selectedCustomer = row;
-					
-						 // get the clicked row's data and initialize the input fields.
-						 var dataRecord = $("#addOrderGrid").jqxGrid('getrowdata', selectedCustomer);
-						 
-						 //ajax call to create new order						 
-						 if(checkNextAvailableDate(dataRecord.nextAvailableDate)) {
-							//ajax call to create new order
-							submitNewOrder(dataRecord.id, orderType);
-						 } else {
-							selectedCustomer = -1;
-						 }
-					} else {
-						selectedCustomer = -1;
-					}				 
-				}
-			  },
-			  { text: 'New Tefap Order', datafield: 'New Tefap Order', columntype: 'button', width: 150, cellsrenderer: function()
-				{
-					return 'New Tefap Order';
-				}, buttonclick: function(row) {				
-					// prompt user for confirmation before adding new order
-					var r = confirm("Create new TEFAP order?");
-                    var orderType = "tefap";
-
-					if (r == true) {
-						selectedCustomer = row;
-					
-						 // get the clicked row's data and initialize the input fields.
-						 var dataRecord = $("#addOrderGrid").jqxGrid('getrowdata', selectedCustomer);
-
-                        submitNewOrder(dataRecord.id, orderType);
-					} else {
-						selectedCustomer = -1;
-					}				 
+				}, buttonclick: function(row) {
+                  selectedRow = row;
+                  $("#new-order-confirm").dialog("open");
 				}
 			  }
 			]
-		});				
+		});
+
+    $("#new-order-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 160,
+        modal: true,
+        show: {effect: "clip", duration: 400},
+        position: {my: "top", at: "center"},
+        buttons: {
+            "Yes": function() {
+                addTefap = $("#addTefap").prop('checked');
+                var dataRecord = $("#addOrderGrid").jqxGrid('getrowdata', selectedRow);
+                recordId = dataRecord.id;
+                if(!beforeNextAvailableDate(dataRecord.nextAvailableDate)) {
+                    //ajax call to create new order
+                    submitNewOrder(recordId, REGULAR_ORDER_TYPE);
+
+                    if(addTefap) {
+                        submitNewOrder(recordId, TEFAP_ORDER_TYPE);
+                    }
+
+                    resetRecordInfo();
+                    $(this).dialog('close');
+                } else {
+                    $("#order-override-confirm").dialog('open');
+                    $(this).dialog('close');
+                }
+            },
+            "No": function() {
+                resetRecordInfo();
+                $(this).dialog('close');
+            }
+        }
+    });
+
+    $("#order-override-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 250,
+        height: 300,
+        modal: true,
+        position: {my: "top", at: "center"},
+        show: {effect: "shake", duration: 800},
+        buttons: {
+            "Yes": function() {
+                //ajax call to create new order
+                submitNewOrder(recordId, REGULAR_ORDER_TYPE);
+
+                if(addTefap) {
+                    submitNewOrder(recordId, TEFAP_ORDER_TYPE);
+                }
+
+                resetRecordInfo();
+                $(this).dialog('close');
+            },
+            "No": function() {
+                resetRecordInfo();
+                $(this).dialog('close');
+            }
+        }
+    });
 });
 
-function checkNextAvailableDate(nextAvailableDate) {
+function beforeNextAvailableDate(nextAvailableDate) {
 	//check to make sure the customer is not attempting an order before their
 	//next available date
 	if(nextAvailableDate == null) {
-		return true;
+		return false;
 	} else {
 		//zero out minutes and seconds for dates as we only care about the month and day
 		nextAvailableDate = compactDate(nextAvailableDate);
 		var currentDate = compactDate(new Date());
 		
-		if(nextAvailableDate > currentDate) {
-			var r = confirm("It's too soon for customer's next available order.\nWould you like to override this alert and continue anyways?");
-			if(r == true) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+		if(currentDate.getDay() != 0 && nextAvailableDate < currentDate) {
+			return true;
+		} else {
+            return false;
+        }
 	}
 }
 
@@ -202,7 +229,7 @@ function submitNewOrder(customerId, orderType) {
             timeout: 1250
         });
     }).fail(function(xhr, status, error) {
-        var text = '<h3>Unable to Update Customer</h3>';
+        var text = '<h3>Unable to Add Order</h3>';
         text += 'Reason: ';
         text += xhr.statusText;
 
@@ -221,4 +248,9 @@ function compactDate(date) {
 	date.setSeconds(0);
 	date.setMilliseconds(0);
 	return date;
+}
+
+function resetRecordInfo() {
+    recordId = -1;
+    selectedRow = -1;
 }

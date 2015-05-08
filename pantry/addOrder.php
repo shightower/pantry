@@ -17,6 +17,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
     <link rel="stylesheet" href="css/jqx.energyblue.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
     <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/jquery-ui.css"/>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
@@ -24,6 +25,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
     <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
     <script type="text/javascript" src="js/addOrder.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 </head>
 <body>
 <div id='content' class='content centeredBlock'>
@@ -76,6 +78,21 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
     </div>
 
     <div class="bottomPadding">&nbsp</div>
+
+    <!-- Pop-up info -->
+    <div id="new-order-confirm" title="Create Regular Order?">
+        <p><span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 0 0;"></span>
+        <input type="checkbox" name="includeTefapOrder" id="addTefap">Include Tefap Order?
+        </p>
+    </div>
+
+    <div id="order-override-confirm" title="Order is Too Soon!">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 0 0;"></span>
+            You are attempting to create an order for a customer before their next scheduled available order date. Would
+            you like to continue with the order anyways?
+        </p>
+    </div>
 </div>
 </body>
 </html>

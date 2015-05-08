@@ -24,6 +24,18 @@ class CustomerService {
         }
     }
 
+    public function getAllCustomers() {
+        $customers = \models\Customer::findMany();
+        $customerArray = array();
+
+        foreach($customers as $customer) {
+            array_push($customerArray, $customer->asArray());
+        }
+
+        echo json_encode($customerArray);
+        exit();
+    }
+
     private function setValuesAndSave($customer) {
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];

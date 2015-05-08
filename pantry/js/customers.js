@@ -62,7 +62,8 @@ $(document).ready(function () {
 				{ name: 'service', type: 'string' }
 			],
 			id: 'id',
-			url: 'customers.php'
+			url: 'currentCustomers.php?action=getAllCustomers',
+            type: 'GET'
 		};
 		
 		//set width and height for popup editor

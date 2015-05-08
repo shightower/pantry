@@ -6,6 +6,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
     $cs = new CustomerService();
     $cs->updateCustomer();
 }
+
+if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
+    $cs = new CustomerService();
+    $cs->getAllCustomers();
+}
 ?>
 <html>
 <head>
