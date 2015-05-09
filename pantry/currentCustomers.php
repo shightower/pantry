@@ -47,7 +47,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
             <li>Orders
                 <ul>
                     <li><a href="addOrder.php">Add</a></li>
-                    <li><a href="managePendingOrders.php">Pending</a></li>
+                    <li><a href="pendingOrders.php">Pending</a></li>
                 </ul>
             </li>
             <li>Reports

@@ -1,5 +1,5 @@
-var REGULAR_ORDER_TYPE = "regular";
-var TEFAP_ORDER_TYPE = "tefap";
+var REGULAR_ORDER_TYPE = "Regular";
+var TEFAP_ORDER_TYPE = "Tefap";
 
 var lastNameFilterGroup = new $.jqx.filter();
 var firstNameFilterGroup = new $.jqx.filter();
@@ -217,7 +217,7 @@ function beforeNextAvailableDate(nextAvailableDate) {
 function submitNewOrder(customerId, orderType) {
 	
 	var params = 'customerId=' + customerId + '&';
-    params += 'type=' + orderType + '&';
+    params += 'type=' + orderType.toLowerCase() + '&';
     params += 'action=addOrder';
 
     //send update request
@@ -225,7 +225,7 @@ function submitNewOrder(customerId, orderType) {
         noty({
             layout: 'center',
             type: 'success',
-            text: '<h3>New Order Adding to Pending List</h3>',
+            text: '<h3>New ' + orderType + ' Order Adding to Pending List</h3>',
             timeout: 1250
         });
     }).fail(function(xhr, status, error) {

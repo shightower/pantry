@@ -40,7 +40,7 @@ require_once 'common/sessionCheck.php';
             <li>Orders
                 <ul>
                     <li><a href="addOrder.php">Add</a></li>
-                    <li><a href="managePendingOrders.php">Pending</a></li>
+                    <li><a href="pendingOrders.php">Pending</a></li>
                 </ul>
             </li>
             <li>Reports

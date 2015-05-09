@@ -60,7 +60,9 @@ class OrderService {
     }
 
     public function getPendingOrders() {
-        $pendingOrders = \models\Order::where('status', PENDING_STATUS)->findMany();
+        $orderType = $_GET['type'];
+        $orderType = strtoupper($orderType);
+        $pendingOrders = \models\Order::where('status', PENDING_STATUS)->where('type', $orderType)->findMany();
         $pendingOrderArray = array();
 
         foreach($pendingOrders as $order) {

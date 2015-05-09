@@ -10,7 +10,7 @@ setTimeout(refresh, REFRESH_RATE);
 
 $(document).ready(function () {
 		// source of pending orders
-		var source = {
+		var regularSource = {
 			datatype: "json",
 			datafields: [
 				{ name: 'id', type: 'int'},
@@ -20,13 +20,28 @@ $(document).ready(function () {
 				{ name: 'orderWeight', type: 'int' },
 				{ name: 'type', type: 'string' },
 				{ name: 'customerFirstName', type: 'string' },
-				{ name: 'customerLastName', type: 'string' },
-				{ name: 'tefap', type: 'bool' }
+				{ name: 'customerLastName', type: 'string' }
 			],
 			id: 'id',
-			url: 'pendingOrders.php',
-            type: 'POST'
+			url: 'pendingOrders.php?action=getPendingOrders&type=regular',
+            type: 'GET'
 		};
+
+    var tefapSource = {
+        datatype: "json",
+        datafields: [
+            { name: 'id', type: 'int'},
+            { name: 'orderDate', type: 'date' },
+            { name: 'tefapCount', type: 'int' },
+            { name: 'orderWeight', type: 'int' },
+            { name: 'type', type: 'string' },
+            { name: 'customerFirstName', type: 'string' },
+            { name: 'customerLastName', type: 'string' }
+        ],
+        id: 'id',
+        url: 'pendingOrders.php?action=getPendingOrders&type=tefap',
+        type: 'GET'
+    };
 		
 		//default height for all input fields
 		var defaultHeight = 25;
@@ -52,7 +67,7 @@ $(document).ready(function () {
 		$("#tefapCount").jqxNumberInput({inputMode: 'simeple', width: 75, height: defaultHeight, min: 0, decimalDigits: 0});
 		
 		
-		var dataAdapter = new $.jqx.dataAdapter(source, {
+		var regularDataAdapter = new $.jqx.dataAdapter(regularSource, {
 			downloadComplete: function (data, status, xhr) {
 			},
 			loadComplete: function (data) {
@@ -61,12 +76,21 @@ $(document).ready(function () {
 				alert('error occurred');
 			}
 		});
-		
-		var editRow = -1;
-		// initialize pendingOrdersGrid
-		$("#pendingOrdersGrid").jqxGrid({
+
+    var tefapDataAdapter = new $.jqx.dataAdapter(tefapSource, {
+        downloadComplete: function (data, status, xhr) {
+        },
+        loadComplete: function (data) {
+        },
+        loadError: function (xhr, status, error) {
+            alert('error occurred');
+        }
+    });
+
+		// initialize pendingOrdersGrids
+		$("#pendingRegularOrdersGrid").jqxGrid({
 			width: 890,
-			source: dataAdapter,                
+			source: regularDataAdapter,
 			pageable: true,
 			autoheight: true,
 			sortable: true,
@@ -84,14 +108,14 @@ $(document).ready(function () {
 				{
 					return 'Complete';
 				}, buttonclick: function(rowIndex) {
-					completeOrder(rowIndex);
+					completeRegularOrder(rowIndex);
 				}
 			  },
 			  { text: 'Remove', datafield: 'Remove', columntype: 'button', align: 'center', width: 100, cellsrenderer: function()
 				{
 					return 'Remove';
 				}, buttonclick: function(rowIndex) {
-					var dataRecord = $("#pendingOrdersGrid").jqxGrid('getrowdata', rowIndex);
+					var dataRecord = $("#pendingRegularOrdersGrid").jqxGrid('getrowdata', rowIndex);
 					
 					// prompt user for confirmation before adding new order
 					var r = confirm("Remove Order-" + dataRecord.id + "?");
@@ -103,14 +127,49 @@ $(document).ready(function () {
 			  }
 			]
 		});
-		
-		$('#pendingOrdersGrid').on('rowdoubleclick', function (event)  { 
-			rowIndex = event.args.rowindex;
-			completeOrder(rowIndex); 
-		});
+
+    $("#pendingTefapOrdersGrid").jqxGrid({
+        width: 910,
+        source: tefapDataAdapter,
+        pageable: true,
+        autoheight: true,
+        sortable: true,
+        altrows: true,
+        showsortmenuitems: true,
+        theme: theme,
+        columns: [
+            { text: 'Order #', datafield: 'id', cellsalign: 'center', width: 80},
+            { text: 'First Name', datafield: 'customerFirstName', align: 'center', width: 125},
+            { text: 'Last Name', datafield: 'customerLastName', align: 'center', width: 125},
+            { text: 'Order Date', datafield: 'orderDate', align: 'center', cellsformat: 'ddd M/dd/y hh:mm tt', width: 175},
+            { text: 'Tefap Count', datafield: 'tefapCount', align: 'center', cellsalign: 'center', width: 105},
+            { text: 'Order Type', datafield: 'type', align: 'center', cellsalign: 'center', width: 100},
+            { text: 'Complete', datafield: 'Complete', columntype: 'button', align: 'center', width: 100, cellsrenderer: function()
+            {
+                return 'Complete';
+            }, buttonclick: function(rowIndex) {
+                completeTefapOrder(rowIndex);
+            }
+            },
+            { text: 'Remove', datafield: 'Remove', columntype: 'button', align: 'center', width: 100, cellsrenderer: function()
+            {
+                return 'Remove';
+            }, buttonclick: function(rowIndex) {
+                var dataRecord = $("#pendingTefapOrdersGrid").jqxGrid('getrowdata', rowIndex);
+
+                // prompt user for confirmation before adding new order
+                var r = confirm("Remove Order-" + dataRecord.id + "?");
+
+                if(r == true) {
+                    deletePendingOrder(dataRecord.id);
+                }
+            }
+            }
+        ]
+    });
 		
 		$('#popupOrder').jqxWindow({
-			width: 350,
+			width: 375,
 			height: 400,
 			resizable: false,
 			isModal: true,
@@ -121,7 +180,7 @@ $(document).ready(function () {
 		});
 		
 		$('#popupTefap').jqxWindow({
-			width: 350,
+			width: 375,
 			height: 400,
 			resizable: false,
 			isModal: true,
@@ -154,7 +213,7 @@ $(document).ready(function () {
             params += 'action=completeOrder';
 			
 			//send update request
-            $.post('managePendingOrders.php', params, function(resp) {
+            $.post('pendingOrders.php', params, function(resp) {
                 $('#popupOrder').jqxWindow('close');
                 clearOrderPopup();
 
@@ -183,14 +242,14 @@ $(document).ready(function () {
 
 		$('#completeTefapButton').click(function() {			
 			var params = '';
-			params += 'id=' + $('#tefapOrderNum').val() + '&';
+			params += 'id=' + $('#tefapOrderId').val() + '&';
 			params += 'orderDate=' + $('#tefapDate').val() + '&';
 			params += 'orderWeight=' + $('#tefapWeight')[0].value + '&';
 			params += 'tefapCount=' + $('#tefapCount')[0].value+ '&';
             params += 'action=completeOrder';
 			
 			//send update request
-            $.post('managePendingOrders.php', params, function(resp) {
+            $.post('pendingOrders.php', params, function(resp) {
                 $('#popupOrder').jqxWindow('close');
                 clearOrderPopup();
 
@@ -228,29 +287,29 @@ $(document).ready(function () {
 		});
 });
 
-function completeOrder(rowIndex) {
+function completeRegularOrder(rowIndex) {
 	// get the clicked row's data and initialize the input fields.
-	 var dataRecord = $("#pendingOrdersGrid").jqxGrid('getrowdata', rowIndex);
-	 
-	 if(dataRecord.tefap) {
-		$("#tefapOrderNum").val(dataRecord.id);
-		$("#tefapFirstName").val(dataRecord.customerFirstName);
-		$("#tefapLastName").val(dataRecord.customerLastName);
-		$("#tefapDate").val(dataRecord.orderDate);
-		 
-		// show the popup window.
-		$("#popupTefap").jqxWindow('open');
-		 
-	 } else {
-		$("#id").val(dataRecord.id);
-		$("#firstName").val(dataRecord.customerFirstName);
-		$("#lastName").val(dataRecord.customerLastName);
-		$("#orderDate").val(formatDate(dataRecord.orderDate));
-         $("#numBags").val(dataRecord.numBags);
-		 
-		// show the popup window.
-		$("#popupOrder").jqxWindow('open');
-	 }
+	 var dataRecord = $("#pendingRegularOrdersGrid").jqxGrid('getrowdata', rowIndex);
+    $("#id").val(dataRecord.id);
+    $("#firstName").val(dataRecord.customerFirstName);
+    $("#lastName").val(dataRecord.customerLastName);
+    $("#orderDate").val(formatDate(dataRecord.orderDate));
+    $("#numBags").attr({'max' : dataRecord.numBags});
+
+    // show the popup window.
+    $("#popupOrder").jqxWindow('open');
+}
+
+function completeTefapOrder(rowIndex) {
+    // get the clicked row's data and initialize the input fields.
+    var dataRecord = $("#pendingTefapOrdersGrid").jqxGrid('getrowdata', rowIndex);
+    $("#tefapOrderId").val(dataRecord.id);
+    $("#tefapFirstName").val(dataRecord.customerFirstName);
+    $("#tefapLastName").val(dataRecord.customerLastName);
+    $("#tefapDate").val(formatDate(dataRecord.orderDate));
+
+    // show the popup window.
+    $("#popupTefap").jqxWindow('open');
 }
 
 function deletePendingOrder(id) {
@@ -258,7 +317,7 @@ function deletePendingOrder(id) {
     params += 'action=deletePending';
 
     //send update request
-    $.post('managePendingOrders.php', params, function(resp) {
+    $.post('pendingOrders.php', params, function(resp) {
         $('#popupOrder').jqxWindow('close');
         clearOrderPopup();
 
