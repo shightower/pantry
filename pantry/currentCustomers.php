@@ -77,7 +77,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
     </div>
 
     <div id="customersGrid" class="searchResults"></div>
-    <div id='clearSearchDiv' class="clearSearchDiv">
+    <div id='clearSearchDiv' class="divCenteredButton">
         <input type='button' id='clearButton' value='Clear Search'/>
     </div>
 

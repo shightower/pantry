@@ -77,6 +77,24 @@ class OrderService {
         exit();
     }
 
+    public function getCompletedOrders() {
+        $orderType = $_GET['type'];
+        $orderType = strtoupper($orderType);
+        $completedOrders = \models\Order::where('status', COMPLETE_STATUS)->where('type', $orderType)->order_by_desc('orderDate')->findMany();
+        $completedOrderArray = array();
+
+        foreach($completedOrders as $order) {
+            $customer = \models\Customer::findOne($order->customer_id);
+            $orderAsArray = $order->asArray();
+            $orderAsArray['customerFirstName'] = $customer->firstName;
+            $orderAsArray['customerLastName'] = $customer->lastName;
+            array_push($completedOrderArray, $orderAsArray);
+        }
+
+        echo json_encode($completedOrderArray);
+        exit();
+    }
+
     public function completeOrder() {
         //first check to make sure a valid order number is provided and it is still pending.
         $orderId = $_POST['id'];
@@ -211,21 +229,6 @@ class OrderService {
 
         echo json_encode($reportInfo);
         exit();
-    }
-
-    public function getCompletedOrders() {
-        $completedOrders = \models\Order::where('status', COMPLETE_STATUS)->order_by_desc('orderDate')->findMany();
-        $completedOrderArray = array();
-
-        foreach($completedOrders as $order) {
-            $customer = \models\Customer::findOne($order->customer_id);
-            $orderAsArray = $order->asArray();
-            $orderAsArray['customerFirstName'] = $customer->firstName;
-            $orderAsArray['customerLastName'] = $customer->lastName;
-            array_push($completedOrderArray, $orderAsArray);
-        }
-
-        echo json_encode($completedOrderArray);
     }
 
     private function hasPendingOrder($customerId, $orderType) {

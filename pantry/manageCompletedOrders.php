@@ -8,6 +8,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
     $os = new OrderService();
     $os->getPendingOrders();
 }
+
+if(isset($_GET['action']) && $_GET['action'] == 'getCompletedOrders') {
+    $os = new OrderService();
+    $os->getCompletedOrders();
+}
 ?>
 <html>
 <head>
@@ -52,12 +57,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
                     <li><a href="tefapReport.php">TEFAP Report</a></li>
                 </ul>
             </li>
-            <li>Export
-                <ul id="export">
-                    <li id="pdfExport">PDF</li>
-                    <li id="excelExport">Excel</li>
-                </ul>
-            </li>
         </ul>
     </div>
 
@@ -72,8 +71,39 @@ if(isset($_POST['action']) && $_POST['action'] == 'getPendingOrders') {
     </div>
     <!-- End of Common Content -->
 
-    <div id="completedOrdersGrid" class="searchResults"></div>
-    <div id='clearSearchDiv' class="clearSearchDiv">
+    <div id="completedRegularOrdersGrid" class="searchResults"></div>
+    <div style="width: 810px !important;" class="divCenteredButton">
+        <table style="float: right;">
+            <tr>
+                <td>
+                    <input type="button" id="exportRegularButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportRegularButtonExcel" value="Export Excel"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class='titleDiv'>
+        <p id='pageTitle'>Completed Tefap Orders</p>
+    </div>
+
+    <div id="completedTefapOrdersGrid" class="searchResults"></div>
+    <div style="width: 810px !important;" class="divCenteredButton">
+        <table style="float: right;">
+            <tr>
+                <td>
+                    <input type="button" id="exportTefapButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportTefapButtonExcel" value="Export Excel"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id='clearSearchDiv' class="divCenteredButton">
         <input type='button' id='clearButton' value='Clear Search'/>
     </div>
 

@@ -73,7 +73,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
     <div id="addOrderGrid" class="searchResults"></div>
 
     <!-- Div to show clear search filter -->
-    <div id='clearSearchDiv' class="clearSearchDiv">
+    <div id='clearSearchDiv' class="divCenteredButton">
         <input type='button' id='clearButton' value='Clear Search'/>
     </div>
 
