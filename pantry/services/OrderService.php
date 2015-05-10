@@ -53,6 +53,8 @@ class OrderService {
             }
 
             $newOrder->save();
+            echo json_encode($newOrder);
+            exit();
         } else {
             http_response_code(400);
             header($_SERVER['SERVER_PROTOCOL']." 400 User already has pending order.");

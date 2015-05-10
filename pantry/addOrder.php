@@ -1,6 +1,7 @@
 <?php
 include_once 'common/showErrors.php';
 
+include_once 'notes.php';
 require_once 'services/OrderService.php';
 
 if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {

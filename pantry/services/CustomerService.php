@@ -12,6 +12,7 @@ class CustomerService {
     public function addCustomer() {
         $customer = ORM::for_table('Customer')->create();
         $this->setValuesAndSave($customer);
+        exit();
     }
 
     public function updateCustomer() {
@@ -22,6 +23,7 @@ class CustomerService {
         } else {
             $this->setValuesAndSave($customer);
         }
+        exit();
     }
 
     public function getAllCustomers() {
@@ -68,6 +70,5 @@ class CustomerService {
         $customer->isAttendee = $isAttendee;
 
         $customer->save();
-        var_dump($customer);
     }
 }
