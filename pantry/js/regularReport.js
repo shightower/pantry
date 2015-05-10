@@ -1,6 +1,8 @@
+var source;
+
 $(document).ready(function() {
 	//hide reports section on initial load
-	$('#reportSummaryDiv').hide();
+	$('#regularReportsGrid').hide();
 	
 	//start date Jqx
 	$("#startDateSelection").jqxDateTimeInput({
@@ -21,36 +23,95 @@ $(document).ready(function() {
 		width: '200',
 		theme: theme
 	});
-	
-	//action taken when generate button clicked
-	$("#generateReportButton").on('click', function () {
-		var params = validateDates();
-		
-		if(params != null) {
-			generateReports(params);
-		}
-	});
+
+    source = {
+        localdata: [],
+        datatype: "json",
+        datafields: [
+            { name: 'order_id', type: 'int'},
+            { name: 'customer_id', type: 'int'},
+            { name: 'firstName', type: 'string' },
+            { name: 'lastName', type: 'string' },
+            { name: 'numAdults', type: 'int' },
+            { name: 'numKids', type: 'int' },
+            { name: 'ethnicity', type: 'string' },
+            { name: 'isAttendee', type: 'bool' },
+            { name: 'weight', type: 'int' },
+            { name: 'numBags', type: 'int' }
+        ]
+    };
+
+    //action taken when generate button clicked
+    $("#generateReportButton").on('click', function () {
+        var params = validateDates();
+
+        if(params != null) {
+            generateReports(params);
+        }
+    });
+
+    var dataAdapter = new $.jqx.dataAdapter(source);
+
+    // initialize jqxGrid
+    $("#regularReportsGrid").jqxGrid(
+        {
+            width: 1130,
+            source: dataAdapter,
+            showstatusbar: true,
+            statusbarheight: 50,
+            showaggregates: true,
+            theme: theme,
+            columns: [
+                { text: 'Order ID', datafield: 'order_id', width: 100,
+                    aggregates: [{'Total Orders': function(aggregatedValue) {
+                        return aggregatedValue + 1;
+                    }}]},
+                { text: 'Customer ID', datafield: 'customer_id', width: 100 },
+                { text: 'First Name', datafield: 'firstName', width: 100 },
+                { text: 'Last Name', datafield: 'lastName',  width: 120 },
+                { text: '# of Adults', datafield: 'numAdults', width: 100, aggregates: ['sum']},
+                { text: '# of Kids', datafield: 'numKids', width: 80, aggregates: ['sum']},
+                { text: 'Order Weight', datafield: 'weight', width: 115, aggregates: ['sum']},
+                { text: '# of Bags', datafield: 'numBags', width: 85, aggregates: ['sum']},
+                { text: 'Ethnicity', datafield: 'ethnicity',  width: 175 },
+                { text: 'Attendee BCC', datafield: 'isAttendee', columntype: 'checkbox',  width: 150,
+                    aggregates: [{ 'Attend BCC':
+                        function (aggregatedValue, currentValue) {
+                            if (currentValue) {
+                                return aggregatedValue + 1;
+                            }
+                            return aggregatedValue;
+                        }
+                    },
+                        { 'Don\'t Attend BCC':
+                            function (aggregatedValue, currentValue) {
+                                if (!currentValue) {
+                                    return aggregatedValue + 1;
+                                }
+                                return aggregatedValue;
+                            }
+                        }]}
+            ]
+        });
 });
 
 function generateReports(params) {
 	var paramStr = 'startDate=' + params.startDate + '&';
 	paramStr += 'endDate=' + params.endDate + '&';
     paramStr += 'action=generateRegularReport';
+    var results;
 
     $.post('regularReport.php', paramStr, function(results, status) {
-        var data = JSON.parse(results);
+        source.localdata = JSON.parse(results);
 
-        //show div containing reports summary
-        $('#totalFamilies').html(data.totalFamilies);
-        $('#totalWeight').html(data.totalWeight + ' lbs');
-        $('#totalAdults').html( data.totalAdults);
-        $('#totalKids').html(data.totalKids);
-        $('#totalBccAttendees').html(data.totalBccAttendees);
-        $('#totalNonBccAttendees').html(data.totalNonBccAttendees);
-        $('#reportSummaryDiv').show();
+        $("#regularReportsGrid").jqxGrid('updatebounddata', 'cells');
+        $('#regularReportsGrid').show();
+
     }).fail(function(xhr, status, error) {
         alert('failure. \n' + xhr);
     });
+
+    return results;
 }
 
 function validateDates() {

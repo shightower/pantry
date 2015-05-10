@@ -6,7 +6,7 @@ require_once 'services/OrderService.php';
 
 if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReport') {
     $os = new OrderService();
-    $os->generateRegularOrderReport();
+    $os->generateRegularOrderReport2();
 }
 ?>
 <html>
@@ -60,44 +60,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReport') {
 
     <div class="bottomPadding">&nbsp</div>
 
-    <div id="reportSummaryDiv">
-        <!-- Regular Report -->
-        <table class="reportSummaryTable" id="regularReport">
-            <tr style="width: 100%; font-size: 1.5em">
-                <td colspan="7">Regular Order Summary</td>
-            </tr>
-            <tr>
-                <th>
-                    Total Families
-                </th>
-                <th>
-                    Total Weight
-                </th>
-                <th>
-                    Total # of Adults
-                </th>
-                <th>
-                    Total # of Kids
-                </th>
-                <th>
-                    # of Bridgeway Attendees
-                </th>
-                <th>
-                    # of Non Bridgeway Attendees
-                </th>
-            </tr>
-            <tbody>
-                <tr>
-                    <td id="totalFamilies"></td>
-                    <td id="totalWeight"></td>
-                    <td id="totalAdults"></td>
-                    <td id="totalKids"></td>
-                    <td id="totalBccAttendees"></td>
-                    <td id="totalNonBccAttendees"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div id="regularReportsGrid" class="searchResults"></div>
 
     <div class="bottomPadding">&nbsp</div>
 </div>
