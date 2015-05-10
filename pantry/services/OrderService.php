@@ -143,7 +143,7 @@ class OrderService {
 
     }
 
-    public function generateRegularOrderReport() {
+    public function generateRegularOrderReportSummary() {
         $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
         $startDate->hour = 0;
         $startDate->minute = 0;
@@ -167,10 +167,14 @@ class OrderService {
         $reportInfo['totalFamilies'] = 0;
         $reportInfo['totalBccAttendees'] = 0;
         $reportInfo['totalNonBccAttendees'] = 0;
+        $reportInfo['totalBags'] = 0;
+
+        $ethnicities = array();
 
         foreach($completedOrders as $order) {
             $reportInfo['totalFamilies'] += 1;
             $reportInfo['totalWeight'] += $order->orderWeight;
+            $reportInfo['totalBags'] += $order->numBags;
             $customer = \models\Customer::findOne($order->customer_id);
             $reportInfo['totalAdults'] += $customer->numAdults;
             $reportInfo['totalKids'] += $customer->numKids;
@@ -180,13 +184,17 @@ class OrderService {
             } else {
                 $reportInfo['totalNonBccAttendees'] += 1;
             }
+
+            array_push($ethnicities, $customer->ethnicity);
         }
+
+        $reportInfo['totalEthnicities'] = count(array_unique($ethnicities));
 
         echo json_encode($reportInfo);
         exit();
     }
 
-    public function generateRegularOrderReport2() {
+    public function generateRegularOrderReportDetails() {
         $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
         $startDate->hour = 0;
         $startDate->minute = 0;

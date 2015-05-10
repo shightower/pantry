@@ -4,9 +4,14 @@ include_once 'common/showErrors.php';
 
 require_once 'services/OrderService.php';
 
-if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReport') {
+if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReportSummary') {
     $os = new OrderService();
-    $os->generateRegularOrderReport2();
+    $os->generateRegularOrderReportSummary();
+}
+
+if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReportDetails') {
+    $os = new OrderService();
+    $os->generateRegularOrderReportDetails();
 }
 ?>
 <html>
@@ -57,11 +62,36 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReport') {
     <div style="width: 220px;" class="centeredBlock">
         <input type="button" value="Generate Report" id="generateReportButton"/>
     </div>
-
     <div class="bottomPadding">&nbsp</div>
 
-    <div id="regularReportsGrid" class="searchResults"></div>
+    <div id="regularReportsSummaryGrid" class="searchResults"></div>
+    <div style="width: 1060px !important;" class="divCenteredButton" id="summaryButtonDiv">
+        <table style="float: right;">
+            <tr>
+                <td>
+                    <input type="button" id="exportSummaryButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportSummaryButtonExcel" value="Export Excel"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="bottomPadding">&nbsp</div>
 
+    <div id="regularReportsDetailsGrid" class="searchResults"></div>
+    <div style="width: 1100px !important;" class="divCenteredButton" id="detailsButtonDiv">
+        <table style="float: right;">
+            <tr>
+                <td>
+                    <input type="button" id="exportDetailsButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportDetailsButtonExcel" value="Export Excel"/>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="bottomPadding">&nbsp</div>
 </div>
 </body>
