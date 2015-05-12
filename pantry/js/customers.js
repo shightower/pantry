@@ -24,10 +24,10 @@ $(document).ready(function () {
 			applyFilter();
 		});
 		
-		$('#clearButton').jqxButton({
-			width: 100,
-			theme: theme
-		});
+		//$('#clearButton').jqxButton({
+		//	width: 100,
+		//	theme: theme
+		//});
 		
 		$('#clearButton').click(function() {
 			$("#customersGrid").jqxGrid('removefilter', 'firstName');
@@ -65,32 +65,32 @@ $(document).ready(function () {
 			url: 'currentCustomers.php?action=getAllCustomers',
             type: 'GET'
 		};
-		
+
 		//set width and height for popup editor
-		var defaultHeight = 25;
-		$("#firstName").width(100);
-		$("#firstName").height(defaultHeight);
-		$("#lastName").width(150);
-		$("#lastName").height(defaultHeight);		
-		$("#street").width(250);
-		$("#street").height(defaultHeight);
-		$("#city").width(100);
-		$("#city").height(defaultHeight);
-		$("#state").width(125);
-		$("#state").height(defaultHeight);
-		$("#zip").width(75);
-		$("#zip").height(defaultHeight);
-		$("#phone").width(125);
-		$("#phone").height(defaultHeight);
-		$("#ethnicity").width(150);
-		$("#ethnicity").height(defaultHeight);
-		$("#isAttendee").width(75);
-		$("#isAttendee").height(defaultHeight);
-		$("#service").width(75);
-		$("#service").height(defaultHeight);
-		
-		$("#numAdults").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
-		$("#numKids").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
+		//var defaultHeight = 25;
+		//$("#firstName").width(100);
+		//$("#firstName").height(defaultHeight);
+		//$("#lastName").width(150);
+		//$("#lastName").height(defaultHeight);
+		//$("#street").width(250);
+		//$("#street").height(defaultHeight);
+		//$("#city").width(100);
+		//$("#city").height(defaultHeight);
+		//$("#state").width(125);
+		//$("#state").height(defaultHeight);
+		//$("#zip").width(75);
+		//$("#zip").height(defaultHeight);
+		//$("#phone").width(125);
+		//$("#phone").height(defaultHeight);
+		//$("#ethnicity").width(150);
+		//$("#ethnicity").height(defaultHeight);
+		//$("#isAttendee").width(75);
+		//$("#isAttendee").height(defaultHeight);
+		//$("#service").width(75);
+		//$("#service").height(defaultHeight);
+		//
+		//$("#numAdults").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
+		//$("#numKids").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
 		
 		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
@@ -103,6 +103,8 @@ $(document).ready(function () {
 				alert('error occurred');
 			}
 		});
+
+
 		
 		var editRow = -1;
 		// initialize jqxGrid
@@ -134,17 +136,17 @@ $(document).ready(function () {
 			 // get the clicked row's data and initialize the input fields.
 			 var dataRecord = $("#customersGrid").jqxGrid('getrowdata', editRow);
 			 $("#id").val(dataRecord.id);
-			 $("#firstName").val(dataRecord.firstName);
-			 $("#lastName").val(dataRecord.lastName);
-			 $("#phone").val(dataRecord.phone);
-			 $("#street").val(dataRecord.street);
-			 $("#city").val(dataRecord.city);
+			 $("#firstNameInput").val(dataRecord.firstName);
+			 $("#lastNameInput").val(dataRecord.lastName);
+			 $("#phoneInput").val(dataRecord.phone);
+			 $("#streetInput").val(dataRecord.street);
+			 $("#cityInput").val(dataRecord.city);
 			 
 			 setSelectedIndex('state', dataRecord.state);
 			 //$("#state").val(dataRecord.state);
-			 $("#zip").val(dataRecord.zip);
-			 $("#numAdults").jqxNumberInput({ decimal: dataRecord.numAdults });
-			 $("#numKids").jqxNumberInput({ decimal: dataRecord.numKids });
+			 $("#zipInput").val(dataRecord.zip);
+			 //$("#numAdults").jqxNumberInput({ decimal: dataRecord.numAdults });
+			 //$("#numKids").jqxNumberInput({ decimal: dataRecord.numKids });
 			 
 			 setSelectedIndex('ethnicity', dataRecord.ethnicity);
 			 //$("#ethnicity").val(dataRecord.ethnicity);
@@ -174,8 +176,8 @@ $(document).ready(function () {
 			$('#firstName').jqxInput('selectAll');
 		});
 		
-		$('#cancelButton').jqxButton({theme: theme});
-		$('#saveButton').jqxButton({theme: theme});
+		//$('#cancelButton').jqxButton({theme: theme});
+		//$('#saveButton').jqxButton({theme: theme});
 		
 		$('#saveButton').click(function() {			
 			var params = '';

@@ -1,5 +1,6 @@
 var REGULAR_ORDER_TYPE = "Regular";
 var TEFAP_ORDER_TYPE = "Tefap";
+var EARLY_ORDER_MSG = "Created an order for customer before the 45 day wait period was met.";
 
 var lastNameFilterGroup = new $.jqx.filter();
 var firstNameFilterGroup = new $.jqx.filter();
@@ -179,7 +180,7 @@ $(document).ready(function () {
         buttons: {
             "Yes": function() {
                 //ajax call to create new order
-                submitNewOrder(recordId, REGULAR_ORDER_TYPE);
+                submitNewOrderWithNote(recordId, REGULAR_ORDER_TYPE);
 
                 if(addTefap) {
                     submitNewOrder(recordId, TEFAP_ORDER_TYPE);
@@ -206,7 +207,7 @@ function beforeNextAvailableDate(nextAvailableDate) {
 		nextAvailableDate = compactDate(nextAvailableDate);
 		var currentDate = compactDate(new Date());
 		
-		if(currentDate.getDay() != 0 && nextAvailableDate < currentDate) {
+		if(/*currentDate.getDay() != 0 && */nextAvailableDate > currentDate) {
 			return true;
 		} else {
             return false;
@@ -215,8 +216,34 @@ function beforeNextAvailableDate(nextAvailableDate) {
 }
 
 function submitNewOrder(customerId, orderType) {
-	
 	var params = 'customerId=' + customerId + '&';
+    params += 'type=' + orderType.toLowerCase() + '&';
+    params += 'action=addOrder';
+
+    //send update request
+    $.post('addOrder.php', params, function() {
+        noty({
+            layout: 'center',
+            type: 'success',
+            text: '<h3>New ' + orderType + ' Order Adding to Pending List</h3>',
+            timeout: 1250
+        });
+    }).fail(function(xhr, status, error) {
+        var text = '<h3>Unable to Add Order</h3>';
+        text += 'Reason: ';
+        text += xhr.statusText;
+
+        var n = noty({
+            layout: 'center',
+            type: 'error',
+            text: text,
+            timeout: 3000
+        });
+    });
+}
+
+function submitNewOrderWithNote(customerId, orderType) {
+    var params = 'customerId=' + customerId + '&';
     params += 'type=' + orderType.toLowerCase() + '&';
     params += 'action=addOrder';
 
@@ -228,6 +255,11 @@ function submitNewOrder(customerId, orderType) {
             text: '<h3>New ' + orderType + ' Order Adding to Pending List</h3>',
             timeout: 1250
         });
+
+        if(resp != null && resp != undefined) {
+            var data = JSON.parse(resp);
+            createEarlyOrderNote(customerId, data.id);
+        }
     }).fail(function(xhr, status, error) {
         var text = '<h3>Unable to Add Order</h3>';
         text += 'Reason: ';
@@ -253,4 +285,12 @@ function compactDate(date) {
 function resetRecordInfo() {
     recordId = -1;
     selectedRow = -1;
+}
+
+function createEarlyOrderNote(customerId, orderId) {
+    var paramStr = 'action=addNote&';
+    paramStr += 'customer_id=' + customerId + '&';
+    paramStr += 'order_id=' + orderId + '&';
+    paramStr += 'msg=' + EARLY_ORDER_MSG;
+    $.post('notes.php', paramStr);
 }

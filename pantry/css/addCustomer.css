@@ -28,3 +28,32 @@
  em {
 	color: red;
 }
+
+.text-input
+{
+    height: 21px;
+    width: 110px;
+}
+
+.addCustomerTable
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.addCustomerTable td,
+.addCustomerTable tr
+{
+    margin: 0px;
+    padding: 2px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    font-family: Verdana;
+    font-size: 12px;
+}
+
+h3
+{
+    display: inline-block;
+    margin: 0px;
+}

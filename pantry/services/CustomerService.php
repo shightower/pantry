@@ -6,12 +6,14 @@ require_once $rootPath . 'common/idiorm.php';
 require_once $rootPath . 'common/paris.php';
 require_once $rootPath . 'db_configs/db_configs.php';
 require_once $rootPath . 'models/Customer.php';
+require_once 'NotesService.php';
 
 class CustomerService {
 
     public function addCustomer() {
         $customer = ORM::for_table('Customer')->create();
         $this->setValuesAndSave($customer);
+
         exit();
     }
 
@@ -70,5 +72,10 @@ class CustomerService {
         $customer->isAttendee = $isAttendee;
 
         $customer->save();
+
+        if($_POST['note'] && trim($_POST['note']) != "") {
+            $ns = new NotesService();
+            $ns->addCustomerNote($customer->id, $_POST['note']);
+        }
     }
 }

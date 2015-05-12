@@ -10,8 +10,4 @@ class Note extends \Model {
     public function customer() {
         return $this->belongs_to('Customer');
     }
-
-    public function order() {
-        return $this->belongs_to('Order');
-    }
 }

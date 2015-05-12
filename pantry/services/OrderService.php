@@ -53,7 +53,9 @@ class OrderService {
             }
 
             $newOrder->save();
-            echo json_encode($newOrder);
+            $returnObj = array();
+            $returnObj['id'] = $newOrder->id;
+            echo json_encode($returnObj);
             exit();
         } else {
             http_response_code(400);
@@ -114,10 +116,14 @@ class OrderService {
                 $pendingOrder->save();
 
                 // Update the Customer's next available order date
+                $today = Carbon::now();
                 $customer = \models\Customer::findOne($pendingOrder->customer_id);
-                $nextAvailableDate = Carbon::now()->addDays(WAIT_PERIOD_DAYS);
-                $customer->lastOrderDate = Carbon::now();
-                $customer->nextAvailableDate = $nextAvailableDate;
+                if($today->dayOfWeek != Carbon::SUNDAY) {
+                    $nextAvailableDate = Carbon::now()->addDays(WAIT_PERIOD_DAYS);
+                    $customer->nextAvailableDate = $nextAvailableDate;
+                }
+
+                $customer->lastOrderDate = $today;
                 $customer->save();
             } else if($pendingOrder->type === OrderService::TEFAP_ORDER_TYPE) {
                 $pendingOrder->tefapCount = $_POST['tefapCount'];

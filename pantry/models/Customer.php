@@ -9,4 +9,8 @@ class Customer extends \Model {
     public function orders() {
         return $this->has_many('Order');
     }
+
+    public function notes() {
+        return $this->has_many('Notes');
+    }
 }
