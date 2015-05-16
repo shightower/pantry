@@ -54,11 +54,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
     <div class="bottomPadding">&nbsp</div>
 
     <div id="popupWindow">
-        <div><h3>Add Customer</h3></div>
+        <div><h3>Edit Customer</h3></div>
         <div>
-            <form id="addCustomerForm">
+            <form id="editCustomerForm">
                 <input type="hidden" name="action" value="updateCustomer"/>
-                <table class="addCustomerTable">
+                <table class="editCustomerTable">
+                    <tr>
+                        <td>Id</td>
+                        <td><input type="text" id="id" name="id" class="text-input" disabled="true"/></td>
+                    </tr>
                     <tr>
                         <td>First Name</td>
                         <td><input type="text" id="firstNameInput" name="firstName" class="text-input"/></td>
@@ -143,11 +147,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
                     </tr>
                     <tr>
                         <td>Number of Adults</td>
-                        <td><input type="number" name="numOfAdults" id="numAdultsInput" min="0"/></td>
+                        <td><div name="numOfAdults" id="numAdultsInput"></div></td>
                     </tr>
                     <tr>
                         <td>Number of Kids (under 12)</td>
-                        <td><input type="number" name="numOfKids" id="numKidsInput" min="0"/></td>
+                        <td><div name="numOfKids" id="numKidsInput"></div></td>
                     </tr>
                     <tr>
                         <td>Ethnicity</td>
@@ -174,7 +178,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
                     <tr id="serviceRow">
                         <td>Service</td>
                         <td>
-                            <select name="service">
+                            <select name="service" id="service">
                                 <option value="8">8</option>
                                 <option value="10">10</option>
                                 <option value="10:30">10:30</option>
@@ -185,11 +189,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
                     <tr>
                         <td>Note</td>
                         <td>
-                            <textarea rows="7" cols="40" id="noteInput" name="note"></textarea>
+                            <textarea rows="8" cols="35" id="noteInput" name="note"></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="text-align: center;"><input type="button" value="Add Customer" id="addCustButton"></td>
+                        <td colspan="2" style="text-align: center;"><input type="button" value="Update Info" id="editCustButton"></td>
                     </tr>
                 </table>
             </form>

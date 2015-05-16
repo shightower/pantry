@@ -5,8 +5,6 @@ var or_filter_operator = 0;
 $(document).ready(function () {
 		//initially hide the clear filter div
 		$('#clearSearchDiv').hide();
-
-        $('.us_phone').mask('(000) 000-0000');
 		
 		//Round Search
 		$('#searchBox').corner('5px');
@@ -66,33 +64,6 @@ $(document).ready(function () {
             type: 'GET'
 		};
 
-		//set width and height for popup editor
-		//var defaultHeight = 25;
-		//$("#firstName").width(100);
-		//$("#firstName").height(defaultHeight);
-		//$("#lastName").width(150);
-		//$("#lastName").height(defaultHeight);
-		//$("#street").width(250);
-		//$("#street").height(defaultHeight);
-		//$("#city").width(100);
-		//$("#city").height(defaultHeight);
-		//$("#state").width(125);
-		//$("#state").height(defaultHeight);
-		//$("#zip").width(75);
-		//$("#zip").height(defaultHeight);
-		//$("#phone").width(125);
-		//$("#phone").height(defaultHeight);
-		//$("#ethnicity").width(150);
-		//$("#ethnicity").height(defaultHeight);
-		//$("#isAttendee").width(75);
-		//$("#isAttendee").height(defaultHeight);
-		//$("#service").width(75);
-		//$("#service").height(defaultHeight);
-		//
-		//$("#numAdults").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
-		//$("#numKids").jqxNumberInput({inputMode: 'simple', spinMode: 'simple', width: 50, height: defaultHeight, min: 0, decimalDigits: 0, spinButtons: true });
-		
-		
 		var dataAdapter = new $.jqx.dataAdapter(source, {
 			downloadComplete: function (data, status, xhr) {
 			},
@@ -129,6 +100,52 @@ $(document).ready(function () {
 			  { text: 'BCC Attendee', datafield: 'isAttendee', columntype: 'checkbox', align: 'center', width: 110, cellsalign: 'center' }
 			]
 		});
+
+    $("#phoneInput").jqxMaskedInput({
+        mask: '(###)###-####',
+        width: 150,
+        height: 22
+    });
+
+    $('#zipInput').jqxMaskedInput({
+        mask: '#####',
+        width: 150,
+        height: 22
+    });
+
+    $('#numAdultsInput').jqxNumberInput({
+        width: '110px',
+        height: 22,
+        min: 0,
+        max: 10,
+        inputMode: 'simple',
+        spinButtons: true,
+        decimalDigits: 0
+    });
+
+    $('#numKidsInput').jqxNumberInput({
+        width: '110px',
+        height: 22,
+        min: 0,
+        max: 10,
+        inputMode: 'simple',
+        spinButtons: true,
+        decimalDigits: 0
+    });
+
+    $('#editCustomerForm').jqxValidator({
+        rules: [
+            { input: '#firstNameInput', message: 'First name should be between 2 and 25 characters long!', action: 'blur,keyup', rule: 'length=2,25'},
+            { input: '#lastNameInput', message: 'Last name should be between 2 and 35 characters long!', action: 'blur,keyup', rule: 'length=2,35'},
+            { input: '#streetInput', message: 'Must provide an address!', action: 'blur,keyup', rule: 'required'},
+            { input: '#cityInput', message: 'Must provide a city!', action: 'blur,keyup', rule: 'required'},
+            { input: '#phoneInput', message: 'Invalid phone number!', action: 'blur,keyup', rule: 'phone'},
+            { input: '#zipInput', message: 'Invalid zip code!', action: 'blur,keyup', rule: function() {
+                var zip = $('#zipInput').val();
+                return !isNaN(parseInt(zip) || zip.indexOf('_') == -1);
+            }}
+        ]
+    });
 		
 		$('#customersGrid').on('rowdoubleclick', function (event)  { 
 			editRow = event.args.rowindex;
@@ -143,28 +160,21 @@ $(document).ready(function () {
 			 $("#cityInput").val(dataRecord.city);
 			 
 			 setSelectedIndex('state', dataRecord.state);
-			 //$("#state").val(dataRecord.state);
 			 $("#zipInput").val(dataRecord.zip);
-			 //$("#numAdults").jqxNumberInput({ decimal: dataRecord.numAdults });
-			 //$("#numKids").jqxNumberInput({ decimal: dataRecord.numKids });
+            $("#numAdultsInput").val(dataRecord.numAdults);
+            $("#numKidsInput").val(dataRecord.numKids);
 			 
 			 setSelectedIndex('ethnicity', dataRecord.ethnicity);
-			 //$("#ethnicity").val(dataRecord.ethnicity);
-			 
 			 setSelectedIndex('isAttendee', dataRecord.isAttendee);
-			 //$("#isAttendee").val(dataRecord.isAttendee);
-			 
 			 setSelectedIndex('service', dataRecord.service);
-			 //$("#service").val(dataRecord.service);
 			 
 			 // show the popup window.
 			 $("#popupWindow").jqxWindow('open');
 		});
 		
 		$('#popupWindow').jqxWindow({
-			width: 400,
+			width: 475,
 			height: 650,
-			resizable: false,
 			isModal: true,
 			autoOpen: false,
 			cancelButton: $('#cancelButton'),
@@ -173,54 +183,59 @@ $(document).ready(function () {
 		});
 		
 		$('#popupWindow').on('open', function() {
-			$('#firstName').jqxInput('selectAll');
+			$('#firstNameInput').jqxInput('selectAll');
 		});
 		
 		//$('#cancelButton').jqxButton({theme: theme});
-		//$('#saveButton').jqxButton({theme: theme});
+		$('#editCustButton').jqxButton({theme: theme});
 		
-		$('#saveButton').click(function() {			
-			var params = '';
-			params += 'id=' + $('#id').val() + '&';
-			params += 'firstName=' + $('#firstName').val() + '&';
-			params += 'lastName=' + $('#lastName').val() + '&';
-			params += 'phone=' + $('#phone').val() + '&';
-			params += 'street=' + $('#street').val() + '&';
-			params += 'city=' + $('#city').val() + '&';
-			params += 'zip=' + $('#zip').val() + '&';
-			params += 'state=' + $('#state').val() + '&';
-			params += 'numAdults=' + $('#numAdults').val() + '&';
-			params += 'numKids=' + $('#numKids').val() + '&';
-			params += 'ethnicity=' + $('#ethnicity').val() + '&';
-			params += 'isAttendee=' + $('#isAttendee').val() + '&';
-			params += 'service=' + $('#service').val() + '&';
-            params += 'action=updateCustomer';
+		$('#editCustButton').click(function() {
+            var formIsValid = $('#editCustomerForm').jqxValidator('validate');
 
-            $.post('currentCustomers.php', params, function(resp) {
-                $('#popupWindow').jqxWindow('close');
+            if(formIsValid) {
+                var params = '';
+                params += 'id=' + $('#id').val() + '&';
+                params += 'firstName=' + $('#firstNameInput').val() + '&';
+                params += 'lastName=' + $('#lastNameInput').val() + '&';
+                params += 'phone=' + $('#phoneInput').val() + '&';
+                params += 'street=' + $('#streetInput').val() + '&';
+                params += 'city=' + $('#cityInput').val() + '&';
+                params += 'zip=' + $('#zipInput').val() + '&';
+                params += 'state=' + $('#state').val() + '&';
+                params += 'numOfAdults=' + $('#numAdultsInput').val() + '&';
+                params += 'numOfKids=' + $('#numKidsInput').val() + '&';
+                params += 'ethnicity=' + $('#ethnicity').val() + '&';
+                params += 'isAttendee=' + $('#isAttendee').val() + '&';
+                params += 'service=' + $('#service').val() + '&';
+                params += 'note=' + $('#noteInput').val() + '&';
+                params += 'action=updateCustomer';
 
-                var n = noty({
-                    layout: 'center',
-                    type: 'success',
-                    text: '<h3>Update Applied Successfully</h3>',
-                    timeout: 750,
-                    callback: {
-                        afterClose: function() {
+                $.post('currentCustomers.php', params, function(resp) {
+                    $('#popupWindow').jqxWindow('close');
 
-                            //refresh page, and force manual pull of new data
-                            location.reload(true);
+                    var n = noty({
+                        layout: 'center',
+                        type: 'success',
+                        text: '<h3>Update Applied Successfully</h3>',
+                        timeout: 750,
+                        callback: {
+                            afterClose: function() {
+
+                                //refresh page, and force manual pull of new data
+                                location.reload(true);
+                            }
                         }
-                    }
-                });
+                    });
 
-            }).fail(function() {
-                var n = noty({
-                    layout: 'center',
-                    type: 'error',
-                    text: '<h3>Unable to Update Customer</h3>',
-                    timeout: 5000
+                }).fail(function() {
+                    var n = noty({
+                        layout: 'center',
+                        type: 'error',
+                        text: '<h3>Unable to Update Customer</h3>',
+                        timeout: 5000
+                    });
                 });
-            });
+            }
 		});
 
     // export customers to PDF document
