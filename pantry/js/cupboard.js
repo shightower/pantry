@@ -30,30 +30,4 @@ $(document).ready(function () {
         $('#content').corner('20px');
 		
 		$('#logo').corner('top 20px');
-		
-		$("#addCustFrame").fancybox({
-			title		: 'Customer Information',
-			maxWidth	: 450,
-			width		: '40%',
-			height		: '75%',
-            fitToView	: false,
-			autoSize	: false,
-			closeClick	: false,
-			openEffect	: 'elastic',
-			closeEffect	: 'fade',
-			autoCenter	: true
-		});
-
-    $("#reminder").fancybox({
-        maxWidth	: 300,
-        maxHeight   : 100,
-        fitToView	: false,
-        width		: '30%',
-        height		: '15%',
-        autoSize	: false,
-        openEffect	: 'elastic',
-        closeEffect	: 'fade',
-        autoCenter	: true
-    });
-		
 });

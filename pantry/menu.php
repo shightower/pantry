@@ -7,7 +7,7 @@ echo "
         <li><a href='home.php'>Welcome</a></li>
         <li>Customers
             <ul>
-                <li><a id='addCustFrame' data-fancybox-type='iframe' href='addCustomerIframe.php'>New</a></li>
+                <li><a href='addCustomer.php'>New</a></li>
                 <li><a href='currentCustomers.php'>View Current</a></li>
             </ul>
         </li>

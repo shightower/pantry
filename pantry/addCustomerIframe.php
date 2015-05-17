@@ -7,6 +7,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'addCustomer') {
     $cs = new CustomerService();
     $cs->addCustomer();
 }
+
+if(isset($_GET['action']) && $_GET['action'] == 'checkForExisting') {
+    $cs = new CustomerService();
+    $cs->isExistingCustomer();
+}
 ?>
 <html>
 <head>
@@ -20,6 +25,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addCustomer') {
     <script type="text/javascript" src="js/default.js"></script>
     <script type="text/javascript" src="js/addCustomer.js"></script>
     <script type="text/javascript" src="js/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 </head>
 <body>
 <div id="register">
@@ -163,6 +169,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'addCustomer') {
             </table>
         </form>
     </div>
+</div>
+
+<div id="ignore-duplicate-confirm" title="Possible Duplicate Entry">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 0 0;"></span>
+        You are attempting to create a possible duplicate customer record. An existing customer was found with the same
+        first and last name, as well as the exact same phone number. Do you want to create the record anyways?
+    </p>
 </div>
 
 </body>

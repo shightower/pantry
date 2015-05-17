@@ -24,15 +24,10 @@
  .formLayout br {
 	clear: left;
  }
- 
- em {
-	color: red;
-}
 
 .text-input
 {
     height: 21px;
-    width: 110px;
 }
 
 .addCustomerTable
@@ -49,7 +44,7 @@
     border-spacing: 0px;
     border-collapse: collapse;
     font-family: Verdana;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 h3

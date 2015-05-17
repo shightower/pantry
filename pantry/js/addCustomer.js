@@ -9,13 +9,13 @@ $(document).ready(function () {
 
     $("#phoneInput").jqxMaskedInput({
         mask: '(###)###-####',
-        width: 150,
+        width: 125,
         height: 22
     });
 
     $('#zipInput').jqxMaskedInput({
         mask: '#####',
-        width: 150,
+        width: 50,
         height: 22
     });
 
@@ -53,20 +53,69 @@ $(document).ready(function () {
 		});
 		
 		$('#addCustButton').click(function(event) {
-			var params = $('#addCustomerForm').serialize();
+            var checkParams = "";
+            checkParams += 'firstName=' + $('#firstNameInput').val() + '&';
+            checkParams += 'lastName=' + $('#lastNameInput').val() + '&';
+            checkParams += 'phone=' + $('#phoneInput').val() + '&';
+            checkParams += 'action=checkForExisting';
 
-            $.post('addCustomerIframe.php', params, function(resp) {
+            $.get('addCustomerIframe.php', checkParams, function(resp) {
+               resp = JSON.parse(resp);
 
-                parent.$.fancybox.close();
-                parent.jQuery.fancybox.close();
-                $('#addCustForm').find('input[type=text]').val('');
-                $('#state').val('Maryland');
-                $('#addCustForm').find('input[type=number]').val(0);
-            }).fail(function(xhr, status, error) {
-                alert('failure. \n' + xhr);
+                if(resp.alreadyExists) {
+                    $("#ignore-duplicate-confirm").dialog('open');
+                } else {
+                    addNewCustomer();
+                }
             });
+
+
+
 		});
 
-    $('.us_phone').mask('(000) 000-0000');
+    $("#ignore-duplicate-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 250,
+        height: 300,
+        modal: true,
+        position: {my: "top", at: "center"},
+        show: {effect: "shake", duration: 800},
+        buttons: {
+            "Yes": function() {
+                addNewCustomer();
+                $(this).dialog('close');
+            },
+            "No": function() {
+                $(this).dialog('close');
+            }
+        }
+    });
 
 });
+
+function addNewCustomer() {
+    var isFormValid = $('#addCustomerForm').jqxValidator('validate');
+
+    if(isFormValid) {
+        var params = $('#addCustomerForm').serialize();
+
+        $.post('addCustomer.php', params, function(resp) {
+            noty({
+                layout: 'center',
+                type: 'success',
+                text: '<h3>Customer Successfully Added</h3>',
+                timeout: 1000,
+                callback: {
+                    afterClose: function() {
+                        location.reload();
+                    }
+                }
+
+            });
+
+        }).fail(function(xhr, status, error) {
+            alert('failure. \n' + xhr);
+        });
+    }
+}

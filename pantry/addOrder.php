@@ -14,7 +14,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {
     <title>Add Pending Order</title>
     <link rel="stylesheet" href="css/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
-    <link rel="stylesheet" href="css/jqx.energyblue.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
     <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery-ui.css"/>

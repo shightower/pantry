@@ -40,6 +40,23 @@ class CustomerService {
         exit();
     }
 
+    public function isExistingCustomer() {
+        $resp = array();
+        $resp['alreadyExists'] = false;
+        $firstName = $_GET['firstName'];
+        $lastName = $_GET['lastName'];
+        $phone = $_GET['phone'];
+
+        $customer = \models\Customer::where('firstName', $firstName)->where('lastName', $lastName)->where('phone', $phone)->findOne();
+
+        if($customer != null) {
+            $resp['alreadyExists']  = true;
+        }
+
+        echo json_encode($resp);
+        exit();
+    }
+
     private function setValuesAndSave($customer) {
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];
