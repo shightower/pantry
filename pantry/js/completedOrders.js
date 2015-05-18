@@ -89,7 +89,7 @@ $(document).ready(function () {
             { name: 'customerLastName', type: 'string' }
         ],
         id: 'id',
-        url: 'manageCompletedOrders.php?action=getCompletedOrders&type=regular',
+        url: 'completedOrders.php?action=getCompletedOrders&type=regular',
         type: 'GET'
     };
 
@@ -106,7 +106,7 @@ $(document).ready(function () {
             { name: 'customerLastName', type: 'string' }
         ],
         id: 'id',
-        url: 'manageCompletedOrders.php?action=getCompletedOrders&type=tefap',
+        url: 'completedOrders.php?action=getCompletedOrders&type=tefap',
         type: 'GET'
     };
 

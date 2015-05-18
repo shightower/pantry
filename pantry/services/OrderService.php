@@ -195,6 +195,13 @@ class OrderService {
 
             array_push($ethnicities, $customer->ethnicity);
         }
+        $ethnicityKeys = array_unique($ethnicities);
+        $ethnicityMap = array();
+
+        foreach ($ethnicityKeys as $ethnicity) {
+            $keyCount = array_keys($ethnicityKeys, $ethnicity, false);
+            $ethnicityMap[$ethnicity] = $keyCount;
+        }
 
         $reportInfo['totalEthnicities'] = count(array_unique($ethnicities));
 

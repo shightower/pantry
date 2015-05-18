@@ -15,7 +15,7 @@ echo "
             <ul>
                 <li><a href='addOrder.php'>Create New</a></li>
                 <li><a href='pendingOrders.php'>View Pending</a></li>
-                <li><a href='manageCompletedOrders.php'>View Completed</a> </li>
+                <li><a href='completedOrders.php'>View Completed</a> </li>
             </ul>
         </li>
         <li>Reports
