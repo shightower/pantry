@@ -195,15 +195,16 @@ class OrderService {
 
             array_push($ethnicities, $customer->ethnicity);
         }
-        $ethnicityKeys = array_unique($ethnicities);
-        $ethnicityMap = array();
 
-        foreach ($ethnicityKeys as $ethnicity) {
-            $keyCount = array_keys($ethnicityKeys, $ethnicity, false);
-            $ethnicityMap[$ethnicity] = $keyCount;
+        $ethnicityDetails = "";
+        $ethnicityCounts = array_count_values($ethnicities);
+        $ethnicityKeys = array_keys($ethnicityCounts);
+
+        foreach($ethnicityKeys as $key) {
+            $ethnicityDetails .= $key . ' (' . $ethnicityCounts[$key] . ')<br/>';
         }
 
-        $reportInfo['totalEthnicities'] = count(array_unique($ethnicities));
+        $reportInfo['totalEthnicities'] = $ethnicityDetails;
 
         echo json_encode($reportInfo);
         exit();
@@ -251,7 +252,7 @@ class OrderService {
         exit();
     }
 
-    public function generateTefapOrderReport() {
+    public function generateTefapOrderReportSummary() {
         $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
         $startDate->hour = 0;
         $startDate->minute = 0;
@@ -273,9 +274,11 @@ class OrderService {
         $reportInfo['totalKids'] = 0;
         $reportInfo['totalAdults'] = 0;
         $reportInfo['totalFamilies'] = 0;
-        $reportInfo['tefapCount'] = 0;
+        $reportInfo['totalTefapCount'] = 0;
         $reportInfo['totalBccAttendees'] = 0;
         $reportInfo['totalNonBccAttendees'] = 0;
+
+        $ethnicities = array();
 
         foreach($completedOrders as $order) {
             $reportInfo['totalFamilies'] += 1;
@@ -283,13 +286,65 @@ class OrderService {
             $customer = \models\Customer::findOne($order->customer_id);
             $reportInfo['totalAdults'] += $customer->numAdults;
             $reportInfo['totalKids'] += $customer->numKids;
-            $reportInfo['tefapCount'] += $order->tefapCount;
+            $reportInfo['totalTefapCount'] += $order->tefapCount;
 
             if($customer->isAttendee === OrderService::IS_ATTENDEE) {
                 $reportInfo['totalBccAttendees'] += 1;
             } else {
                 $reportInfo['totalNonBccAttendees'] += 1;
             }
+
+            array_push($ethnicities, $customer->ethnicity);
+        }
+
+        $ethnicityDetails = "";
+        $ethnicityCounts = array_count_values($ethnicities);
+        $ethnicityKeys = array_keys($ethnicityCounts);
+
+        foreach($ethnicityKeys as $key) {
+            $ethnicityDetails .= $key . ' (' . $ethnicityCounts[$key] . ')<br/>';
+        }
+
+        $reportInfo['totalEthnicities'] = $ethnicityDetails;
+
+        echo json_encode($reportInfo);
+        exit();
+    }
+
+    public function generateTefapOrderReportDetails() {
+        $startDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['startDate']);
+        $startDate->hour = 0;
+        $startDate->minute = 0;
+        $startDate->second = 0;
+
+        $endDate = Carbon::createFromFormat(OrderService::DATE_FORMAT, $_POST['endDate']);
+        $endDate->hour = 23;
+        $endDate->minute = 59;
+        $endDate->second = 59;
+
+        $reportInfo = array();
+
+        $completedOrders = \models\Order::where(array(
+            'status' => COMPLETE_STATUS,
+            'type'=> OrderService::TEFAP_ORDER_TYPE
+        ))->where_raw('(orderDate between ? and ?)', array($startDate, $endDate))->findMany();
+
+        foreach($completedOrders as $order) {
+            $customer = \models\Customer::findOne($order->customer_id);
+
+            $recordInfo = array();
+            $recordInfo['order_id'] = $order->id;
+            $recordInfo['customer_id'] = $customer->id;
+            $recordInfo['firstName'] = $customer->firstName;
+            $recordInfo['lastName'] = $customer->lastName;
+            $recordInfo['numAdults'] = $customer->numAdults;
+            $recordInfo['numKids'] = $customer->numKids;
+            $recordInfo['weight'] = $order->orderWeight;
+            $recordInfo['tefapCount'] = $order->tefapCount;
+            $recordInfo['ethnicity'] = $customer->ethnicity;
+            $recordInfo['isAttendee'] = $customer->isAttendee;
+
+            array_push($reportInfo, $recordInfo);
         }
 
         echo json_encode($reportInfo);

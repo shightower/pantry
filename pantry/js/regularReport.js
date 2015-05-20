@@ -71,17 +71,19 @@ $(document).ready(function() {
             theme: theme,
             pageable: true,
             autoheight: true,
+            autorowheight: true,
             sortable: true,
             altrows: true,
+            columnsheight: 65,
             columns: [
-                { text: 'Total Families', datafield: 'totalFamilies', width: 120, align: 'center', columngroup: 'reportSummary'},
-                { text: 'Total Adults', datafield: 'totalAdults', width: 120, align: 'center',columngroup: 'reportSummary' },
-                { text: 'Total Kids', datafield: 'totalKids',  width: 100, align: 'center',columngroup: 'reportSummary' },
-                { text: 'Total Ethnicities', datafield: 'totalEthnicities', width: 130, align: 'center',columngroup: 'reportSummary'},
-                { text: 'Total Bags', datafield: 'totalBags', width: 100, align: 'center',columngroup: 'reportSummary'},
-                { text: 'Total Weight', datafield: 'totalWeight', width: 100, align: 'center',columngroup: 'reportSummary'},
-                { text: 'Total BCC Attendees', datafield: 'totalBccAttendees', width: 170, align: 'center',columngroup: 'reportSummary'},
-                { text: 'Total Non BCC Attendees', datafield: 'totalNonBccAttendees',  width: 220, align: 'center',columngroup: 'reportSummary' }
+                { text: 'Total<br>Families', datafield: 'totalFamilies', width: 90, align: 'center', columngroup: 'reportSummary', cellsalign: 'center'},
+                { text: 'Total<br>Adults', datafield: 'totalAdults', width: 90, align: 'center',columngroup: 'reportSummary', cellsalign: 'center' },
+                { text: 'Total<br>Kids', datafield: 'totalKids',  width: 90, align: 'center',columngroup: 'reportSummary', cellsalign: 'center' },
+                { text: 'Ethnicity<br>Breakdown', datafield: 'totalEthnicities', width: 300, align: 'center',columngroup: 'reportSummary', cellsalign: 'center'},
+                { text: 'Total<br>Bags', datafield: 'totalBags', width: 100, align: 'center',columngroup: 'reportSummary', cellsalign: 'center'},
+                { text: 'Total<br>Weight', datafield: 'totalWeight', width: 100, align: 'center',columngroup: 'reportSummary', cellsalign: 'center'},
+                { text: 'Total<br>BCC Attendees', datafield: 'totalBccAttendees', width: 140, align: 'center',columngroup: 'reportSummary', cellsalign: 'center'},
+                { text: 'Total Non<br>BCC Attendees', datafield: 'totalNonBccAttendees',  width: 150, align: 'center',columngroup: 'reportSummary', cellsalign: 'center' }
             ],
             columngroups: [
                 {text: "Regular Orders Summary Report", align: 'center', name: 'reportSummary'}
@@ -90,23 +92,24 @@ $(document).ready(function() {
 
     $("#regularReportsDetailsGrid").jqxGrid(
         {
-            width: 1100,
+            width: 1095,
             source: detailsDataAdapter,
             theme: theme,
             pageable: true,
             autoheight: true,
             sortable: true,
+            columnsheight: 65,
             altrows: true,
             columns: [
-                { text: 'Order ID', datafield: 'order_id', width: 100, columngroup: 'reportDetails'},
-                { text: 'First Name', datafield: 'firstName', width: 100, columngroup: 'reportDetails' },
-                { text: 'Last Name', datafield: 'lastName',  width: 120, columngroup: 'reportDetails' },
-                { text: '# of Adults', datafield: 'numAdults', width: 100, columngroup: 'reportDetails'},
-                { text: '# of Kids', datafield: 'numKids', width: 80, columngroup: 'reportDetails'},
-                { text: 'Order Weight', datafield: 'weight', width: 115, columngroup: 'reportDetails'},
-                { text: '# of Bags', datafield: 'numBags', width: 85, columngroup: 'reportDetails'},
-                { text: 'Ethnicity', datafield: 'ethnicity',  width: 250, columngroup: 'reportDetails' },
-                { text: 'Attendee BCC', datafield: 'isAttendee', columntype: 'checkbox',  width: 150, columngroup: 'reportDetails'}
+                { text: 'Order Id', datafield: 'order_id', width: 90, columngroup: 'reportDetails', cellsalign: 'center'},
+                { text: 'First<br>Name', datafield: 'firstName', width: 100, columngroup: 'reportDetails', cellsalign: 'center' },
+                { text: 'Last<br>Name', datafield: 'lastName',  width: 120, columngroup: 'reportDetails', cellsalign: 'center' },
+                { text: 'Number<br>of Adults', datafield: 'numAdults', width: 100, columngroup: 'reportDetails', cellsalign: 'center'},
+                { text: 'Number<br>of Kids', datafield: 'numKids', width: 80, columngroup: 'reportDetails', cellsalign: 'center'},
+                { text: 'Order<br>Weight', datafield: 'weight', width: 100, columngroup: 'reportDetails', cellsalign: 'center'},
+                { text: 'Number<br>of Bags', datafield: 'numBags', width: 85, columngroup: 'reportDetails', cellsalign: 'center'},
+                { text: 'Ethnicity', datafield: 'ethnicity',  width: 300, columngroup: 'reportDetails', cellsalign: 'center' },
+                { text: 'Attend<br>Bridgeway', datafield: 'isAttendee', columntype: 'checkbox',  width: 120, columngroup: 'reportDetails', cellsalign: 'center'}
             ],
             columngroups: [
                 {text: "Regular Orders Detailed Report", align: 'center', name: 'reportDetails'}

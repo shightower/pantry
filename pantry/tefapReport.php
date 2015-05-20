@@ -4,9 +4,14 @@ include_once 'common/showErrors.php';
 
 require_once 'services/OrderService.php';
 
-if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReport') {
+if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReportSummary') {
     $os = new OrderService();
-    $os->generateTefapOrderReport();
+    $os->generateTefapOrderReportSummary();
+}
+
+if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReportDetails') {
+    $os = new OrderService();
+    $os->generateTefapOrderReportDetails();
 }
 ?>
 <html>
@@ -20,7 +25,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReport') {
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
-    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
     <script type="text/javascript" src="js/tefapReport.js"></script>
@@ -56,53 +60,36 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateTefapReport') {
     <div style="width: 220px;" class="centeredBlock">
         <input type="button" value="Generate Report" id="generateReportButton"/>
     </div>
-
     <div class="bottomPadding">&nbsp</div>
 
-    <div id="reportSummaryDiv">
-        <!-- TEFAP Report -->
-        <table class="reportSummaryTable" id="tefapReport">
-            <tr style="width: 100%; font-size: 1.5em">
-                <td colspan="8">TEFAP Order Summary</td>
-            </tr>
+    <div id="tefapReportsSummaryGrid" class="searchResults"></div>
+    <div style="width: 1060px !important;" class="divCenteredButton" id="summaryButtonDiv">
+        <table style="float: right;">
             <tr>
-                <th>
-                    Total Families
-                </th>
-                <th>
-                    Total Tefap Count
-                </th>
-                <th>
-                    Total Weight
-                </th>
-                <th>
-                    Total # of Adults
-                </th>
-                <th>
-                    Total # of Kids
-                </th>
-                <th>
-                    # of Bridgeway Attendees
-                </th>
-                <th>
-                    # of Non-Bridgeway Attendees
-                </th>
+                <td>
+                    <input type="button" id="exportSummaryButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportSummaryButtonExcel" value="Export Excel"/>
+                </td>
             </tr>
-            <tbody>
-            <tr>
-                <td id="totalFamilies"></td>
-                <td id="tefapCount"></td>
-                <td id="totalWeight"></td>
-                <td id="totalAdults"></td>
-                <td id="totalKids"></td>
-                <td id="totalBccAttendees"></td>
-                <td id="totalNonBccAttendees"></td>
-            </tr>
-            </tbody>
         </table>
-
     </div>
+    <div class="bottomPadding">&nbsp</div>
 
+    <div id="tefapReportsDetailsGrid" class="searchResults"></div>
+    <div style="width: 1100px !important;" class="divCenteredButton" id="detailsButtonDiv">
+        <table style="float: right;">
+            <tr>
+                <td>
+                    <input type="button" id="exportDetailsButtonPdf" value="Export PDF"/>
+                </td>
+                <td>
+                    <input type="button" id="exportDetailsButtonExcel" value="Export Excel"/>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="bottomPadding">&nbsp</div>
 </div>
 </body>
