@@ -20,7 +20,6 @@ require_once 'common/sessionCheck.php';
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
-    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
 </head>
 <body>

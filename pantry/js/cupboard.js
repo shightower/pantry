@@ -1,13 +1,6 @@
 var theme = 'ui-sunny';
 
-$(document).ready(function () {		
-        // Create a jqxMenu and set its width and height.
-        $("#menuBar").jqxMenu({ 
-        	width: '100%',
-        	height: '30px',
-        	theme: theme,
-			minimizeWidth: null});
-			
+$(document).ready(function () {
 		// Center menuBar            
 		var centerItems = function () {
 			var firstItem = $($("#menuBar ul:first").children()[0]);
