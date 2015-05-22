@@ -21,12 +21,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'generateRegularReportDetails'
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
     <link rel="stylesheet" href="css/reports.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
-    <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/regularReport.js"></script>
 </head>
 <body>

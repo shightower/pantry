@@ -35,11 +35,14 @@ class NotesService {
     }
 
     function getCustomerNotes() {
-        $notes = \models\Note::where('customer_id', $_POST['customer_id'])->findMany();
+        $notes = \models\Note::where('customer_id', $_GET['customer_id'])->findMany();
         $returnObj = array();
 
         foreach ($notes as $note) {
-            array_push($returnObj, $note);
+            $noteDetails = array();
+            $noteDetails['message'] = $note->message;
+            $noteDetails['date'] = $note->date;
+            array_push($returnObj, $noteDetails);
         }
 
         echo json_encode($returnObj);

@@ -26,13 +26,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'getPendingOrders') {
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
     <link rel="stylesheet" href="css/orders.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
-    <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
-    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/orders.js"></script>
 </head>
 <body>

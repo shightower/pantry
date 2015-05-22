@@ -59,7 +59,7 @@ $(document).ready(function () {
             checkParams += 'phone=' + $('#phoneInput').val() + '&';
             checkParams += 'action=checkForExisting';
 
-            $.get('addCustomerIframe.php', checkParams, function(resp) {
+            $.get('addCustomer.php', checkParams, function(resp) {
                resp = JSON.parse(resp);
 
                 if(resp.alreadyExists) {

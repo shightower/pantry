@@ -27,6 +27,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'checkForExisting') {
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript" src="js/default.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/addCustomer.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 </head>

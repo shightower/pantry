@@ -5,6 +5,14 @@ var or_filter_operator = 0;
 $(document).ready(function () {
 		//initially hide the clear filter div
 		$('#clearSearchDiv').hide();
+
+    $('#notesView').jqxWindow({
+       autoOpen: false,
+        width: 450,
+        height: 300,
+        theme: theme,
+        title: 'Customer Notes'
+    });
 		
 		//Round Search
 		$('#searchBox').corner('5px');
@@ -75,12 +83,14 @@ $(document).ready(function () {
 			}
 		});
 
-
+    var cellsrenderer = function (id) {
+        return '<input type="image" src="images/note.png" style="width: 20px; height: 20px; left: 50%;" onClick="showNotes(event)" id="btn' + id + '" value="View"/>'
+    }
 		
 		var editRow = -1;
 		// initialize jqxGrid
 		$("#customersGrid").jqxGrid({
-			width: 1010,
+			width: 1080,
 			source: dataAdapter,                
 			pageable: true,
 			autoheight: true,
@@ -90,14 +100,15 @@ $(document).ready(function () {
 			theme: theme,
 			columns: [
 			  { text: 'Id', datafield: 'id', hidden: true},
-			  { text: 'First Name', datafield: 'firstName', filterable: true, align: 'center', width: 120, pinned: true },
-			  { text: 'Last Name', datafield: 'lastName', filterable: true, align: 'center', width: 140, pinned: true },
+			  { text: 'First Name', datafield: 'firstName', filterable: true,  width: 120, pinned: true },
+			  { text: 'Last Name', datafield: 'lastName', filterable: true,  width: 140, pinned: true },
 			  { text: 'Phone Number', datafield: 'phone', align: 'center', width: 125 },
-			  { text: 'Street', datafield: 'street', align: 'center', minwidth: 250},
-			  { text: 'City', datafield: 'city', align: 'center', width: 125  },
+			  { text: 'Street', datafield: 'street', minwidth: 180},
+			  { text: 'City', datafield: 'city', width: 125  },
 			  { text: 'Adults', datafield: 'numAdults', align: 'center', width: 75, cellsalign: 'center'  },
 			  { text: 'Kids', datafield: 'numKids', align: 'center', width: 65, cellsalign: 'center' },
-			  { text: 'BCC Attendee', datafield: 'isAttendee', columntype: 'checkbox', align: 'center', width: 110, cellsalign: 'center' }
+			  { text: 'BCC Attendee', datafield: 'isAttendee', columntype: 'checkbox', align: 'center', width: 110, cellsalign: 'center' },
+                {text: 'Notes', cellsrenderer: cellsrenderer, align: 'center', width: 80, cellsalign: 'center'}
 			]
 		});
 
@@ -302,4 +313,31 @@ function setSelectedIndex(id, value) {
 			}
 		}
 	}
+}
+
+function showNotes(event) {
+    var id = event.target.id.slice(3);
+    var divHtml = "";
+
+    // get the clicked row's data and initialize the input fields.
+    var dataRecord = $("#customersGrid").jqxGrid('getrowdata', id);
+    var params = "action=viewNotes&customer_id=" + dataRecord.id;
+
+    $.get('currentCustomers.php', params, function(resp) {
+        resp = JSON.parse(resp);
+
+        if(resp.length == 0) {
+            divHtml += "<div style='width: 400px;' class='centeredBlock'><p>No notes for this customer.</p></div>"
+        }
+        for(var x = 0; x < resp.length; x++) {
+            var note = resp[x];
+            divHtml += "<div style='width: 400px;' class='centeredBlock'><p>" + note.message + "</p></div>";
+            divHtml += "<div style='width: 400px; text-align: right !important;' class='centeredBlock'><p>" + note.date + "</p></div>";
+            divHtml += "<hr/>";
+        }
+
+        $('#notesPan').html(divHtml);
+        $('#notesView').jqxWindow('open');
+
+    })
 }

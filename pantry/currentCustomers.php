@@ -1,6 +1,7 @@
 <?php
 include_once 'common/showErrors.php';
 require_once 'services/CustomerService.php';
+require_once 'services/NotesService.php';
 
 if(isset($_POST['action']) && $_POST['action'] == 'updateCustomer') {
     $cs = new CustomerService();
@@ -11,6 +12,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
     $cs = new CustomerService();
     $cs->getAllCustomers();
 }
+
+if(isset($_GET['action']) && $_GET['action'] == 'viewNotes') {
+    $ns = new NotesService();
+    $ns->getCustomerNotes();
+}
 ?>
 <html>
 <head>
@@ -19,13 +25,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
     <link rel="stylesheet" href="css/jqx.ui-sunny.css" type="text/css"/>
     <link rel="stylesheet" href="css/customers.css" type="text/css"/>
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
-    <link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
-    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/customers.js"></script>
     <script type="text/javascript" src="js/jquery.mask.min.js"></script>
     <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
@@ -197,6 +202,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'getAllCustomers') {
                     </tr>
                 </table>
             </form>
+        </div>
+    </div>
+
+    <div id="notesView">
+        <div id="notesPan">
+
         </div>
     </div>
 </div>
