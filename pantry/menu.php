@@ -24,5 +24,10 @@ echo "
                 <li><a href='tefapReport.php'>TEFAP Orders Report</a></li>
             </ul>
         </li>
+        <li>45 Day Counter
+            <ul>
+                <li id='showReminderCounter'>Show</li>
+            </ul>
+        </li>
     </ul>
 </div>";

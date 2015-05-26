@@ -17,15 +17,17 @@ require_once 'common/sessionCheck.php';
     <link rel="stylesheet" href="css/cupboard.css" type="text/css"/>
     <link rel="stylesheet" href="css/home.css" type="text/css"/>
     <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
+    <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>
 </head>
 <body>
 <div id='content' class='content centeredBlock'>
     <!-- Common Content, do not change -->
-    <?php require 'menu.php';?>
+    <?php include 'menu.php'?>
     <!-- End of Common Content -->
 
     <div class='titleDiv'>

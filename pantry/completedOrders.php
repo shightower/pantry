@@ -24,9 +24,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'getCompletedOrders') {
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.corner.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
     <script type="text/javascript" src="js/jqx-all.js"></script>
     <script type="text/javascript" src="js/cupboard.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/completedOrders.js"></script>
     <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
 </head>
