@@ -3,9 +3,7 @@ if(session_id() == '') {
     session_start();
 }
 
-include_once 'common/showErrors.php';
 include_once 'db_configs/db_configs.php';
-
 require_once 'common/sessionCheck.php';
 
 ?>

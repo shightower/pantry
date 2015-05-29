@@ -1,6 +1,9 @@
 <?php
-include_once 'common/showErrors.php';
+if(session_id() == '') {
+    session_start();
+}
 
+require_once 'common/sessionCheck.php';
 require_once 'services/OrderService.php';
 
 if(isset($_POST['action']) && $_POST['action'] == 'addOrder') {

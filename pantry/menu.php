@@ -1,4 +1,10 @@
 <?php
+if(session_id() == '') {
+    session_start();
+}
+
+require_once 'common/sessionCheck.php';
+
 echo "
 <div class='logo' id='logo'>
 </div>

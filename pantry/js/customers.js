@@ -332,7 +332,7 @@ function showNotes(event) {
         for(var x = 0; x < resp.length; x++) {
             var note = resp[x];
             divHtml += "<div style='width: 400px;' class='centeredBlock'><p>" + note.message + "</p></div>";
-            divHtml += "<div style='width: 400px; text-align: right !important;' class='centeredBlock'><p>" + note.date + "</p></div>";
+            divHtml += "<div style='width: 400px; text-align: right !important;' class='centeredBlock'><p>" + $.format.date(note.date, "ddd MM/dd/yyyy") + "</p></div>";
             divHtml += "<hr/>";
         }
 

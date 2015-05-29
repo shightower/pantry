@@ -1,5 +1,9 @@
 <?php
-include_once 'common/showErrors.php';
+if(session_id() == '') {
+    session_start();
+}
+
+require_once 'common/sessionCheck.php';
 require_once 'services/CustomerService.php';
 require_once 'services/NotesService.php';
 
@@ -205,9 +209,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'viewNotes') {
     </div>
 
     <div id="notesView">
-        <div id="notesPan">
-
-        </div>
+        <div id="notesPan"></div>
     </div>
 </div>
 </body>

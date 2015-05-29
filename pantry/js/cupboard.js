@@ -15,7 +15,7 @@ $(document).ready(function () {
         noty({
             layout: 'topRight',
             type: 'success',
-            text: '<h3>' + dateStr + '</h3>'
+            text: '<h3>45 day count: ' + dateStr + '</h3>'
         });
     });
 
